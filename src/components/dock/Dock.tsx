@@ -43,7 +43,6 @@ export function Dock() {
 								<Button
 									isIconOnly
 									variant="ghost"
-									size="sm"
 									onPress={randomizeVisual}
 									aria-label="Randomize icon, color and background"
 								>
