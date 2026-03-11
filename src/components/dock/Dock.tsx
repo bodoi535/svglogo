@@ -5,8 +5,10 @@ import BucketPaint from "@gravity-ui/icons/BucketPaint";
 import FaceSmile from "@gravity-ui/icons/FaceSmile";
 import Frame from "@gravity-ui/icons/Frame";
 import { Button, Popover, Tooltip } from "@heroui/react";
+import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { useLogo } from "#/hooks/useLogo";
+import { getRandomLogoVisual } from "#/lib/randomizeLogo";
 import { useLogoStore } from "#/store/logoStore";
 import { BgControl } from "./BgControl";
 import { BorderControl } from "./BorderControl";
@@ -17,119 +19,155 @@ import { SliderControl } from "./SliderControl";
 export function Dock() {
 	const { undo, redo, canUndo, canRedo, iconColor, iconSize, set } = useLogo();
 	const openIconPicker = useLogoStore((s) => s.openIconPicker);
+	const randomizeVisual = () => {
+		const next = getRandomLogoVisual();
+		set((d) => {
+			d.iconName = next.iconName;
+			d.iconColor = next.iconColor;
+			d.background = next.background;
+		});
+	};
 
 	return (
 		<div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
-			<motion.div
-				initial={{ opacity: 0, y: 72 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-				className="flex items-center gap-2 rounded-2xl border border-(--border) bg-(--surface)/90 px-3 py-2 shadow-xl backdrop-blur-xl"
-			>
-				{/* Undo / Redo */}
-				<Tooltip>
-					<Tooltip.Trigger>
-						<Button
-							isIconOnly
-							variant="ghost"
-							size="sm"
-							isDisabled={!canUndo()}
-							onPress={undo}
-						>
-							<ArrowRotateLeft width={16} height={16} />
-						</Button>
-					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p className="text-xs">Undo (⌘Z)</p>
-					</Tooltip.Content>
-				</Tooltip>
+			<div className="relative">
+				<div className="absolute right-full top-1/2 mr-2 -translate-y-1/2">
+					<motion.div
+						initial={{ opacity: 0, y: 72 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+						className="flex items-center rounded-2xl border border-(--border) bg-(--surface)/90 px-2 py-2 shadow-xl backdrop-blur-xl"
+					>
+						<Tooltip>
+							<Tooltip.Trigger>
+								<Button
+									isIconOnly
+									variant="ghost"
+									size="sm"
+									onPress={randomizeVisual}
+									aria-label="Randomize icon, color and background"
+								>
+									<Icon icon="lucide:dice-5" width={16} height={16} />
+								</Button>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								<p className="text-xs">Randomize</p>
+							</Tooltip.Content>
+						</Tooltip>
+					</motion.div>
+				</div>
 
-				<Tooltip>
-					<Tooltip.Trigger>
-						<Button
-							isIconOnly
-							variant="ghost"
-							size="sm"
-							isDisabled={!canRedo()}
-							onPress={redo}
-						>
-							<ArrowRotateRight width={16} height={16} />
-						</Button>
-					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p className="text-xs">Redo (⌘⇧Z)</p>
-					</Tooltip.Content>
-				</Tooltip>
+				<motion.div
+					initial={{ opacity: 0, y: 72 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+					className="flex items-center gap-2 rounded-2xl border border-(--border) bg-(--surface)/90 px-3 py-2 shadow-xl backdrop-blur-xl"
+				>
+					{/* Undo / Redo */}
+					<Tooltip>
+						<Tooltip.Trigger>
+							<Button
+								isIconOnly
+								variant="ghost"
+								size="sm"
+								isDisabled={!canUndo()}
+								onPress={undo}
+							>
+								<ArrowRotateLeft width={16} height={16} />
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p className="text-xs">Undo (⌘Z)</p>
+						</Tooltip.Content>
+					</Tooltip>
 
-				<Divider />
+					<Tooltip>
+						<Tooltip.Trigger>
+							<Button
+								isIconOnly
+								variant="ghost"
+								size="sm"
+								isDisabled={!canRedo()}
+								onPress={redo}
+							>
+								<ArrowRotateRight width={16} height={16} />
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p className="text-xs">Redo (⌘⇧Z)</p>
+						</Tooltip.Content>
+					</Tooltip>
 
-				{/* Change Icon */}
-				<Tooltip>
-					<Tooltip.Trigger>
-						<Button isIconOnly variant="ghost" onPress={openIconPicker}>
-							<FaceSmile width={20} height={20} />
-						</Button>
-					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p className="text-xs">Change Icon</p>
-					</Tooltip.Content>
-				</Tooltip>
+					<Divider />
 
-				{/* Icon Color */}
-				<Tooltip>
-					<Tooltip.Trigger>
-						<InlineColorPicker
-							value={iconColor}
-							onChange={(c) =>
+					{/* Change Icon */}
+					<Tooltip>
+						<Tooltip.Trigger>
+							<Button isIconOnly variant="ghost" onPress={openIconPicker}>
+								<FaceSmile width={20} height={20} />
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p className="text-xs">Change Icon</p>
+						</Tooltip.Content>
+					</Tooltip>
+
+					{/* Icon Color */}
+					<Tooltip>
+						<Tooltip.Trigger>
+							<InlineColorPicker
+								value={iconColor}
+								onChange={(c) =>
+									set((d) => {
+										d.iconColor = c;
+									})
+								}
+							/>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p className="text-xs">Icon Color</p>
+						</Tooltip.Content>
+					</Tooltip>
+
+					<Divider />
+
+					<DockPopover
+						label="Background"
+						icon={<BucketPaint width={16} height={16} />}
+					>
+						<BgControl />
+					</DockPopover>
+
+					<DockPopover
+						label="Border & Radius"
+						icon={<Frame width={16} height={16} />}
+					>
+						<BorderControl />
+					</DockPopover>
+
+					<DockPopover
+						label="Icon Size"
+						icon={<ArrowsExpand width={16} height={16} />}
+					>
+						<SliderControl
+							label="Icon Size"
+							value={iconSize}
+							min={10}
+							max={90}
+							unit="%"
+							onChange={(v) =>
 								set((d) => {
-									d.iconColor = c;
+									d.iconSize = v;
 								})
 							}
 						/>
-					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p className="text-xs">Icon Color</p>
-					</Tooltip.Content>
-				</Tooltip>
+					</DockPopover>
 
-				<Divider />
+					<Divider />
 
-				<DockPopover
-					label="Background"
-					icon={<BucketPaint width={16} height={16} />}
-				>
-					<BgControl />
-				</DockPopover>
-
-				<DockPopover
-					label="Border & Radius"
-					icon={<Frame width={16} height={16} />}
-				>
-					<BorderControl />
-				</DockPopover>
-
-				<DockPopover
-					label="Icon Size"
-					icon={<ArrowsExpand width={16} height={16} />}
-				>
-					<SliderControl
-						label="Icon Size"
-						value={iconSize}
-						min={10}
-						max={90}
-						unit="%"
-						onChange={(v) =>
-							set((d) => {
-								d.iconSize = v;
-							})
-						}
-					/>
-				</DockPopover>
-
-				<Divider />
-
-				<ExportMenu />
-			</motion.div>
+					<ExportMenu />
+				</motion.div>
+			</div>
 		</div>
 	);
 }
