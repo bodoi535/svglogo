@@ -17,7 +17,17 @@ import { InlineColorPicker } from "./InlineColorPicker";
 import { SliderControl } from "./SliderControl";
 
 export function Dock() {
-	const { undo, redo, canUndo, canRedo, iconColor, iconSize, set } = useLogo();
+	const {
+		undo,
+		redo,
+		canUndo,
+		canRedo,
+		iconColor,
+		iconBorderColor,
+		iconBorderWidth,
+		iconSize,
+		set,
+	} = useLogo();
 	const openIconPicker = useLogoStore((s) => s.openIconPicker);
 	const randomizeVisual = () => {
 		const next = getRandomLogoVisual();
@@ -118,6 +128,37 @@ export function Dock() {
 							}
 						/>
 					</div>
+					<DockPopover
+						label="Icon Border"
+						icon={<Icon icon="lucide:circle" width={16} height={16} />}
+					>
+						<div className="flex w-56 flex-col gap-3">
+							<div className="flex items-center justify-between">
+								<p className="text-xs text-muted">Color</p>
+								<InlineColorPicker
+									value={iconBorderColor}
+									triggerStyle="swatch"
+									onChange={(c) =>
+										set((d) => {
+											d.iconBorderColor = c;
+										})
+									}
+								/>
+							</div>
+							<SliderControl
+								label="Width"
+								value={iconBorderWidth}
+								min={0}
+								max={24}
+								unit="px"
+								onChange={(v) =>
+									set((d) => {
+										d.iconBorderWidth = v;
+									})
+								}
+							/>
+						</div>
+					</DockPopover>
 
 					<Divider />
 

@@ -1,3 +1,4 @@
+import { getIconOutlineOffsets } from "#/lib/iconOutline";
 import type { Background, LogoState } from "#/store/logoStore";
 
 export function buildBackgroundStyle(bg: Background): string {
@@ -24,6 +25,8 @@ export async function buildCanvasSvg(
 	const {
 		iconName,
 		iconColor,
+		iconBorderColor,
+		iconBorderWidth,
 		iconSize,
 		background,
 		borderRadius,
@@ -33,19 +36,14 @@ export async function buildCanvasSvg(
 
 	const iconPx = Math.round((iconSize / 100) * size);
 	const iconOffset = Math.round((size - iconPx) / 2);
+	const iconOutlineOffsets = getIconOutlineOffsets(iconBorderWidth);
 
-	// Fetch icon SVG from iconify
-	const [prefix, name] = iconName.split(":");
-	let iconSvgContent = "";
-	try {
-		const res = await fetch(
-			`https://api.iconify.design/${prefix}/${name}.svg?color=${encodeURIComponent(iconColor)}&width=${iconPx}&height=${iconPx}`,
-		);
-		iconSvgContent = await res.text();
-		// Extract inner content from the SVG wrapper
-	} catch {
-		iconSvgContent = "";
-	}
+	const [iconSvgContent, borderSvgContent] = await Promise.all([
+		fetchIconSvg(iconName, iconColor, iconPx),
+		iconOutlineOffsets.length > 0
+			? fetchIconSvg(iconName, iconBorderColor, iconPx)
+			: Promise.resolve(""),
+	]);
 
 	// Build background definition
 	let bgDef = "";
@@ -74,6 +72,15 @@ export async function buildCanvasSvg(
 			: "";
 
 	// Clip the icon SVG within the canvas
+	const clippedBorderIcon =
+		borderSvgContent && iconOutlineOffsets.length > 0
+			? iconOutlineOffsets
+					.map(
+						(offset) =>
+							`<image href="data:image/svg+xml,${encodeURIComponent(borderSvgContent)}" x="${iconOffset + offset.x}" y="${iconOffset + offset.y}" width="${iconPx}" height="${iconPx}"/>`,
+					)
+					.join("")
+			: "";
 	const clippedIcon = iconSvgContent
 		? `<image href="data:image/svg+xml,${encodeURIComponent(iconSvgContent)}" x="${iconOffset}" y="${iconOffset}" width="${iconPx}" height="${iconPx}"/>`
 		: "";
@@ -87,7 +94,25 @@ export async function buildCanvasSvg(
   </defs>
   <rect width="${size}" height="${size}" rx="${borderRadius}" ry="${borderRadius}" fill="${bgFill}" ${borderAttr} clip-path="url(#canvas-clip)"/>
   <g clip-path="url(#canvas-clip)">
+    ${clippedBorderIcon}
     ${clippedIcon}
   </g>
 </svg>`;
+}
+
+async function fetchIconSvg(
+	iconName: string,
+	color: string,
+	size: number,
+): Promise<string> {
+	const [prefix, name] = iconName.split(":");
+	if (!prefix || !name) return "";
+	try {
+		const res = await fetch(
+			`https://api.iconify.design/${prefix}/${name}.svg?color=${encodeURIComponent(color)}&width=${size}&height=${size}`,
+		);
+		return await res.text();
+	} catch {
+		return "";
+	}
 }

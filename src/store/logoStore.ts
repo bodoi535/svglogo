@@ -15,6 +15,8 @@ export type Background =
 export interface LogoState {
 	iconName: string;
 	iconColor: string;
+	iconBorderColor: string;
+	iconBorderWidth: number; // 0–24 px
 	iconSize: number; // 10–90, percent of canvas
 	background: Background;
 	borderRadius: number; // 0–256 px
@@ -58,6 +60,8 @@ function flushDebounce(
 const DEFAULT: LogoState = {
 	iconName: "lucide:heart",
 	iconColor: "#BDBDBD",
+	iconBorderColor: "#111111",
+	iconBorderWidth: 0,
 	iconSize: 60,
 	background: {
 		type: "solid",
@@ -135,6 +139,18 @@ export const useLogoStore = create<StoreState>()(
 		{
 			name: "svglogo-state",
 			partialize: (s) => ({ present: s.present }),
+			merge: (persisted, current) => {
+				const data = persisted as Partial<StoreState>;
+				const persistedPresent = data.present ?? {};
+				return {
+					...current,
+					...data,
+					present: {
+						...current.present,
+						...persistedPresent,
+					},
+				};
+			},
 		},
 	),
 );
