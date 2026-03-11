@@ -7,6 +7,7 @@ import Frame from "@gravity-ui/icons/Frame";
 import { Button, Label, Popover, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { useLogo } from "#/hooks/useLogo";
 import { getRandomLogoVisual } from "#/lib/randomizeLogo";
 import { useLogoStore } from "#/store/logoStore";
@@ -29,7 +30,9 @@ export function Dock() {
 		set,
 	} = useLogo();
 	const openIconPicker = useLogoStore((s) => s.openIconPicker);
+	const [diceRotation, setDiceRotation] = useState(0);
 	const randomizeVisual = () => {
+		setDiceRotation((r) => r + 360);
 		const next = getRandomLogoVisual();
 		set((d) => {
 			d.iconName = next.iconName;
@@ -73,7 +76,13 @@ export function Dock() {
 									onPress={randomizeVisual}
 									aria-label="Randomize icon, color and background"
 								>
-									<Icon icon="lucide:dice-5" width={16} height={16} />
+									<motion.span
+										animate={{ rotate: diceRotation }}
+										transition={{ duration: 0.35, ease: "easeOut" }}
+										style={{ display: "inline-flex" }}
+									>
+										<Icon icon="lucide:dice-5" width={16} height={16} />
+									</motion.span>
 								</Button>
 							</Tooltip.Trigger>
 							<Tooltip.Content>
@@ -148,9 +157,8 @@ export function Dock() {
 					{/* Icon Color */}
 					<Tooltip>
 						<Tooltip.Trigger>
-              <InlineColorPicker
-                
-                size='xs'
+							<InlineColorPicker
+								size="xs"
 								value={iconColor}
 								onChange={(c) =>
 									set((d) => {
@@ -162,7 +170,7 @@ export function Dock() {
 						<Tooltip.Content>
 							<p className="text-xs">Icon Color</p>
 						</Tooltip.Content>
-          </Tooltip>
+					</Tooltip>
 
 					<DockPopover
 						label="Icon Border"
