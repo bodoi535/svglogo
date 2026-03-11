@@ -1,5 +1,7 @@
-import { createRouter as createTanStackRouter } from '@tanstack/react-router'
+import { createRouter as createTanStackRouter, RouterProvider } from '@tanstack/react-router'
+import ReactDOM from 'react-dom/client'
 import { routeTree } from './routeTree.gen'
+
 
 export function getRouter() {
   const router = createTanStackRouter({
@@ -17,4 +19,15 @@ declare module '@tanstack/react-router' {
   interface Register {
     router: ReturnType<typeof getRouter>
   }
+}
+
+const router = getRouter();
+
+// Render the app
+const rootElement = document.getElementById("root");
+if (rootElement && !rootElement.innerHTML) {
+	const root = ReactDOM.createRoot(rootElement);
+	root.render(
+		<RouterProvider router={router} />
+	);
 }

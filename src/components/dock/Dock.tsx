@@ -17,7 +17,15 @@ import { InlineColorPicker } from "./InlineColorPicker";
 import { SliderControl } from "./SliderControl";
 
 export function Dock() {
-	const { undo, redo, canUndo, canRedo, iconColor, iconSize, set } = useLogo();
+	const {
+		undo,
+		redo,
+		canUndo,
+		canRedo,
+		iconColor,
+		iconSize,
+		set,
+	} = useLogo();
 	const openIconPicker = useLogoStore((s) => s.openIconPicker);
 	const randomizeVisual = () => {
 		const next = getRandomLogoVisual();
@@ -27,6 +35,23 @@ export function Dock() {
 			d.background = next.background;
 		});
 	};
+
+  // const saveCombination = () => {
+	// 	const storageKey = "svglogo-saved-combinations";
+	// 	const raw = window.localStorage.getItem(storageKey);
+	// 	const parsed = raw ? JSON.parse(raw) : [];
+	// 	const current = Array.isArray(parsed) ? parsed : [];
+	// 	const next = [
+	// 		{
+	// 			iconName,
+	// 			iconColor,
+	// 			background,
+	// 			savedAt: Date.now(),
+	// 		},
+	// 		...current,
+	// 	];
+	// 	window.localStorage.setItem(storageKey, JSON.stringify(next));
+	// };
 
 	return (
 		<div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
@@ -166,6 +191,35 @@ export function Dock() {
 
 					<ExportMenu />
 				</motion.div>
+
+				<div className="absolute left-full top-1/2 ml-2 -translate-y-1/2">
+					{/*<motion.div
+						initial={{ opacity: 0, y: 72 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{
+							duration: 0.5,
+							delay: 0.12,
+							ease: [0.22, 1, 0.36, 1],
+						}}
+						className="flex items-center rounded-2xl border border-(--border) bg-(--surface)/90 px-2 py-2 shadow-xl backdrop-blur-xl"
+					>
+						<Tooltip>
+							<Tooltip.Trigger>
+								<Button
+									isIconOnly
+									variant="ghost"
+									onPress={saveCombination}
+									aria-label="Save"
+								>
+									<Icon icon="lucide:heart" width={16} height={16} />
+								</Button>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								<p className="text-xs">Save</p>
+							</Tooltip.Content>
+						</Tooltip>
+					</motion.div>*/}
+				</div>
 			</div>
 		</div>
 	);
