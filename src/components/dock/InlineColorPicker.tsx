@@ -22,7 +22,7 @@ export function InlineColorPicker({
 			value={value}
 			onChange={(c: Color) => onChange(c.toString("hex"))}
 		>
-			<ColorPicker.Trigger className="flex h-8 w-8 items-center justify-center rounded-lg transition hover:bg-(--default)">
+			<ColorPicker.Trigger className="flex h-8 w-8 items-center justify-center rounded-lg transition hover:bg-default">
 				<ColorSwatch size="xs" shape="circle" />
 			</ColorPicker.Trigger>
 			<ColorPicker.Popover placement={placement} className="p-3">

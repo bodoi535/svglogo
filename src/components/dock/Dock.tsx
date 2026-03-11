@@ -4,7 +4,7 @@ import ArrowsExpand from "@gravity-ui/icons/ArrowsExpand";
 import BucketPaint from "@gravity-ui/icons/BucketPaint";
 import FaceSmile from "@gravity-ui/icons/FaceSmile";
 import Frame from "@gravity-ui/icons/Frame";
-import { Button, Popover } from "@heroui/react";
+import { Button, Label, Popover } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { useLogo } from "#/hooks/useLogo";
@@ -132,12 +132,11 @@ export function Dock() {
 						label="Icon Border"
 						icon={<Icon icon="lucide:circle" width={16} height={16} />}
 					>
-						<div className="flex w-56 flex-col gap-3">
+						<div className="flex w-52 flex-col gap-4">
 							<div className="flex items-center justify-between">
-								<p className="text-xs text-muted">Color</p>
+								<Label className="text-xs text-muted">Color</Label>
 								<InlineColorPicker
 									value={iconBorderColor}
-									triggerStyle="swatch"
 									onChange={(c) =>
 										set((d) => {
 											d.iconBorderColor = c;
