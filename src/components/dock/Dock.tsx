@@ -235,11 +235,11 @@ export function Dock() {
 								})
 							}
 						/>
-          </DockPopover>
-					
-          <Divider />
-          
-          <ExportMenu />
+					</DockPopover>
+
+					<Divider />
+
+					<ExportMenu />
 				</motion.div>
 			</div>
 		</div>
@@ -261,11 +261,18 @@ function DockPopover({
 }) {
 	return (
 		<Popover>
-			<Popover.Trigger>
-				<Button isIconOnly variant="ghost" size="sm" aria-label={label} title={label}>
-					{icon}
-				</Button>
-			</Popover.Trigger>
+			<Tooltip>
+				<Tooltip.Trigger>
+					<Popover.Trigger>
+						<Button isIconOnly variant="ghost" size="sm" aria-label={label}>
+							{icon}
+						</Button>
+					</Popover.Trigger>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					<p className="text-xs">{label}</p>
+				</Tooltip.Content>
+			</Tooltip>
 			<Popover.Content placement="top">
 				<Popover.Dialog>{children}</Popover.Dialog>
 			</Popover.Content>
