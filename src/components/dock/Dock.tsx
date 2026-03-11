@@ -69,7 +69,7 @@ export function Dock() {
 						className="flex items-center rounded-2xl border border-border bg-surface/90 px-2 py-2 shadow-xl backdrop-blur-xl"
 					>
 						<Tooltip>
-							<Tooltip.Trigger>
+							<Tooltip.Trigger tabIndex={-1}>
 								<Button
 									isIconOnly
 									variant="ghost"
@@ -100,7 +100,7 @@ export function Dock() {
 				>
 					{/* Undo / Redo */}
 					<Tooltip>
-						<Tooltip.Trigger>
+						<Tooltip.Trigger tabIndex={-1}>
 							<Button
 								isIconOnly
 								variant="ghost"
@@ -118,7 +118,7 @@ export function Dock() {
 					</Tooltip>
 
 					<Tooltip>
-						<Tooltip.Trigger>
+						<Tooltip.Trigger tabIndex={-1}>
 							<Button
 								isIconOnly
 								variant="ghost"
@@ -139,7 +139,7 @@ export function Dock() {
 
 					{/* Change Icon */}
 					<Tooltip>
-						<Tooltip.Trigger>
+						<Tooltip.Trigger tabIndex={-1}>
 							<Button
 								isIconOnly
 								variant="ghost"
@@ -156,7 +156,7 @@ export function Dock() {
 
 					{/* Icon Color */}
 					<Tooltip>
-						<Tooltip.Trigger>
+						<Tooltip.Trigger tabIndex={-1}>
 							<InlineColorPicker
 								size="xs"
 								value={iconColor}
@@ -262,8 +262,8 @@ function DockPopover({
 	return (
 		<Popover>
 			<Tooltip>
-				<Tooltip.Trigger>
-					<Popover.Trigger>
+				<Tooltip.Trigger tabIndex={-1}>
+					<Popover.Trigger tabIndex={-1}>
 						<Button isIconOnly variant="ghost" size="sm" aria-label={label}>
 							{icon}
 						</Button>
