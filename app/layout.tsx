@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 import { Providers } from "#/components/Providers";
 
 const geistSans = Geist({
@@ -84,6 +85,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>{children}</Providers>
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            defer
+            src="https://analytics.monawwar.io/script.js"
+            data-website-id="f883cc7f-5dc4-4045-b1ad-c279fcce963c"
+          />
+        )}
       </body>
     </html>
   );
