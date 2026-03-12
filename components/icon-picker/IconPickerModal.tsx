@@ -14,6 +14,7 @@ import { IconGrid } from "./IconGrid";
 
 const ICON_SETS = [
   { id: "lucide", label: "Lucide" },
+  { id: "hugeicons", label: "Hugeicons" },
   { id: "heroicons", label: "Heroicons" },
   { id: "ph", label: "Phosphor" },
   { id: "ri", label: "Remix Icons" },
