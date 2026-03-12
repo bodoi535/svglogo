@@ -154,7 +154,7 @@ function GradientTab({
 
       {stops.map((stop, i) => (
         <div
-          key={`${stop.color}-${stop.position}`}
+          key={i === 0 ? "start-stop" : "end-stop"}
           className="flex items-center gap-3"
         >
           <span className="text-xs text-muted w-12 shrink-0">Stop {i + 1}</span>
