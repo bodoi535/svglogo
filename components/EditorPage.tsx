@@ -86,7 +86,7 @@ function EditorPage() {
     }
   }, [set]);
   useKbShortcut(
-    "p",
+    "v",
     () => {
       void applySettingsFromClipboard();
     },
