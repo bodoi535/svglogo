@@ -7,6 +7,15 @@ import { useState } from "react";
 export default function InfoFab() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const shortcuts = [
+    { action: "Undo", shortcut: "⌘ + Z" },
+    { action: "Redo", shortcut: "⌘ + ⇧ + Z" },
+    { action: "Randomize", shortcut: "R" },
+    { action: "Open Icon Picker", shortcut: "I" },
+    { action: "Copy SVG JSON", shortcut: "⇧ + C" },
+    { action: "Paste SVG JSON", shortcut: "⇧ + V" },
+  ];
+
   const open = () => setIsOpen(true);
   const dismiss = () => setIsOpen(false);
 
@@ -41,26 +50,18 @@ export default function InfoFab() {
                   Export as SVG, PNG, or ICO.
                 </p>
 
-                <h1 className="mt-4 mb-2 text-lg font-semibold">
-                  Keyboard Shortcuts
-                </h1>
-                <ul className="prose prose-sm dark:prose-invert max-w-none text-sm text-muted list-disc pl-6">
-                  <li>
-                    <b>Undo:</b> ⌘Z
-                  </li>
-                  <li>
-                    <b>Redo:</b> ⌘⇧Z
-                  </li>
-                  <li>
-                    <b>Randomize:</b> R
-                  </li>
-                  <li>
-                    <b>Export:</b> E
-                  </li>
-                  <li>
-                    <b>Open Icon Picker:</b> I
-                  </li>
-                </ul>
+                <h1 className="mt-4 mb-2 font-semibold">Keyboard Shortcuts</h1>
+                <div className="flex flex-col gap-2 mt-2">
+                  {shortcuts.map((s) => (
+                    <div
+                      key={s.action}
+                      className="flex justify-between items-center text-sm text-muted"
+                    >
+                      <span>{s.action}</span>
+                      <span className=" text-sm">{s.shortcut}</span>
+                    </div>
+                  ))}
+                </div>
               </Modal.Body>
               <Modal.Footer>
                 <Button onPress={dismiss}>Close</Button>
