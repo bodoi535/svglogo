@@ -1,13 +1,15 @@
-import { Button, Dropdown, Label } from "@heroui/react";
+import { Button, Dropdown, Label, Separator } from "@heroui/react";
 import { useExport } from "#/hooks/useExport";
 
 export function ExportMenu() {
-  const { exportSvg, exportPng, exportIco } = useExport();
+  const { exportSvg, exportPng, exportIco, copySvg, copyPng } = useExport();
 
   const handleAction = (key: React.Key) => {
     if (key === "svg") exportSvg();
     else if (key === "png") exportPng();
     else if (key === "ico") exportIco();
+    else if (key === "copy-svg") copySvg();
+    else if (key === "copy-png") copyPng();
   };
 
   return (
@@ -30,6 +32,13 @@ export function ExportMenu() {
           </Dropdown.Item>
           <Dropdown.Item id="ico">
             <Label>ICO (48px)</Label>
+          </Dropdown.Item>
+          <Separator />
+          <Dropdown.Item id="copy-svg">
+            <Label>Copy SVG</Label>
+          </Dropdown.Item>
+          <Dropdown.Item id="copy-png">
+            <Label>Copy PNG</Label>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown.Popover>

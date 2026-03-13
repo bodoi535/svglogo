@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { toast } from "@heroui/react";
 import { trackDownload } from "#/lib/analytics";
 import { buildCanvasSvg } from "#/lib/canvasUtils";
 import { useLogoStore } from "#/store/logoStore";
@@ -46,7 +47,38 @@ export function useExport() {
     }, "image/png");
   }, [present, track]);
 
-  return { exportSvg, exportPng, exportIco };
+  const copySvg = useCallback(async () => {
+    try {
+      const svgString = await buildCanvasSvg(present);
+      await navigator.clipboard.writeText(svgString);
+      toast("SVG copied to clipboard");
+      track("copy-svg");
+    } catch (err) {
+      console.error(err);
+      toast("Failed to copy SVG");
+    }
+  }, [present, track]);
+
+  const copyPng = useCallback(async () => {
+    try {
+      const canvas = await renderToCanvas(present, 512);
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/png"),
+      );
+      if (!blob) throw new Error("Failed to create blob");
+
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+      toast("PNG copied to clipboard");
+      track("copy-png");
+    } catch (err) {
+      console.error(err);
+      toast("Failed to copy PNG");
+    }
+  }, [present, track]);
+
+  return { exportSvg, exportPng, exportIco, copySvg, copyPng };
 }
 
 function download(blob: Blob, filename: string) {
