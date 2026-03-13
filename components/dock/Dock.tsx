@@ -30,23 +30,6 @@ export function Dock() {
   } = useLogo();
   const openIconPicker = useLogoStore((s) => s.openIconPicker);
 
-  // const saveCombination = () => {
-  // 	const storageKey = "svglogo-saved-combinations";
-  // 	const raw = window.localStorage.getItem(storageKey);
-  // 	const parsed = raw ? JSON.parse(raw) : [];
-  // 	const current = Array.isArray(parsed) ? parsed : [];
-  // 	const next = [
-  // 		{
-  // 			iconName,
-  // 			iconColor,
-  // 			background,
-  // 			savedAt: Date.now(),
-  // 		},
-  // 		...current,
-  // 	];
-  // 	window.localStorage.setItem(storageKey, JSON.stringify(next));
-  // };
-
   return (
     <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
       <div className="relative">
@@ -121,6 +104,7 @@ export function Dock() {
           <Tooltip>
             <Tooltip.Trigger tabIndex={-1}>
               <InlineColorPicker
+                title="Icon Color"
                 size="xs"
                 value={iconColor}
                 onChange={(c) =>
@@ -143,6 +127,7 @@ export function Dock() {
               <div className="flex items-center justify-between">
                 <Label className="text-sm text-muted">Color</Label>
                 <InlineColorPicker
+                  title="Icon Border Color"
                   value={iconBorderColor}
                   onChange={(c) =>
                     set((d) => {

@@ -3,6 +3,7 @@ import {
   ColorPicker,
   ColorSlider,
   ColorSwatch,
+  Label,
 } from "@heroui/react";
 import type { Color } from "react-aria-components";
 
@@ -12,6 +13,7 @@ interface InlineColorPickerProps {
   placement?: "top" | "bottom" | "left" | "right";
   size?: "xs" | "sm" | "md" | "lg";
   staticColor?: boolean;
+  title?: string;
 }
 
 export function InlineColorPicker({
@@ -19,7 +21,7 @@ export function InlineColorPicker({
   onChange,
   placement = "top",
   size = "sm",
-  // staticColor,
+  title,
 }: InlineColorPickerProps) {
   return (
     <ColorPicker
@@ -30,6 +32,7 @@ export function InlineColorPicker({
         <ColorSwatch size={size} shape="circle" color={value} />
       </ColorPicker.Trigger>
       <ColorPicker.Popover placement={placement} className="p-3">
+        <Label className="text-sm text-muted">{title || "Pick a color"}</Label>
         <ColorArea
           colorSpace="hsb"
           xChannel="saturation"
