@@ -6,16 +6,24 @@ export interface ExportPayload {
   background: string;
 }
 
-export function trackDownload(payload: ExportPayload) {
+export function trackEvent(eventName: string, eventData?: Record<string, any>) {
   if (typeof window === "undefined" || typeof umami === "undefined") return;
 
   if (typeof umami?.track === "function") {
-    umami.track("download logo", {
-      format: payload.format,
-      icon: payload.icon,
-      color: payload.color,
-      border: payload.border,
-      background: payload.background,
-    });
+    if (eventData) {
+      umami.track(eventName, eventData);
+    } else {
+      umami.track(eventName);
+    }
   }
+}
+
+export function trackDownload(payload: ExportPayload) {
+  trackEvent("download logo", {
+    format: payload.format,
+    icon: payload.icon,
+    color: payload.color,
+    border: payload.border,
+    background: payload.background,
+  });
 }

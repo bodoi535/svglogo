@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useLogo } from "#/hooks/useLogo";
+import { trackEvent } from "#/lib/analytics";
 import { getRandomLogoVisual } from "#/lib/randomizeLogo";
 import { useLogoStore } from "#/store/logoStore";
 
@@ -24,6 +25,7 @@ export function RandomizePopover() {
   }) => {
     if (!icon && !background) return;
 
+    trackEvent("randomize logo");
     setDiceRotation((r) => r + 360);
     const next = await getRandomLogoVisual(selectedIconPrefix, currentIconName);
     set((d) => {

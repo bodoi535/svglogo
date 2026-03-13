@@ -4,6 +4,7 @@ import { Heart, HeartFill } from "@gravity-ui/icons";
 import { Button, Tooltip } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { trackEvent } from "#/lib/analytics";
 import { useCollectionStore } from "#/store/collectionStore";
 import { areLogosEqual, useLogoStore } from "#/store/logoStore";
 
@@ -22,8 +23,10 @@ export function HistoryButton() {
   const handleSave = () => {
     if (isLiked) {
       removeLogo(matchedLogo.id);
+      trackEvent("remove collection");
     } else {
       saveLogo(currentLogo);
+      trackEvent("save collection");
       setIsAnimating(true);
       setTimeout(() => setIsAnimating(false), 600);
     }

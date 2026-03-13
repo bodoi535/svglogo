@@ -9,6 +9,7 @@ import {
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { useIconSearch } from "#/hooks/useIconSearch";
+import { trackEvent } from "#/lib/analytics";
 import { useLogoStore } from "#/store/logoStore";
 import { IconGrid } from "./IconGrid";
 
@@ -43,6 +44,7 @@ export function IconPickerModal() {
   );
 
   const handleSelect = (name: string) => {
+    trackEvent("select icon", { iconName: name });
     set((d) => {
       d.iconName = name;
     });
