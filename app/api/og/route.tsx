@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { redis } from "#/lib/redis";
 import type { LogoState } from "#/store/logoStore";
+import { getIconOutlineOffsets } from "#/lib/iconOutline";
 
 export async function GET(req: Request) {
   try {
@@ -27,15 +28,34 @@ export async function GET(req: Request) {
       bgStyle.backgroundImage = `linear-gradient(${direction}deg, ${stops[0].color}, ${stops[1].color})`;
     }
 
-    // Icon handling: Fetch the icon SVG from Iconify API and embed it as a base64 or encoded data URI
+    // Icon handling: Fetch the icon SVG from Iconify API
     const [prefix, name] = logo.iconName.split(":");
-    const iconRes = await fetch(
-      `https://api.iconify.design/${prefix}/${name}.svg?color=${encodeURIComponent(
-        logo.iconColor,
-      )}&width=256&height=256`,
-    );
-    const iconSvg = await iconRes.text();
+    const size = 420; // Size of the logo card in the OG image
+    const iconPx = Math.round((logo.iconSize / 100) * size);
+    
+    // Scale border width to the OG card size (original is based on 512px)
+    const scaledIconBorderWidth = (logo.iconBorderWidth / 512) * size;
+    const iconOutlineOffsets = getIconOutlineOffsets(scaledIconBorderWidth);
+
+    const [iconSvg, borderSvg] = await Promise.all([
+      fetch(
+        `https://api.iconify.design/${prefix}/${name}.svg?color=${encodeURIComponent(
+          logo.iconColor,
+        )}&width=${iconPx}&height=${iconPx}`,
+      ).then((res) => res.text()),
+      iconOutlineOffsets.length > 0
+        ? fetch(
+            `https://api.iconify.design/${prefix}/${name}.svg?color=${encodeURIComponent(
+              logo.iconBorderColor,
+            )}&width=${iconPx}&height=${iconPx}`,
+          ).then((res) => res.text())
+        : Promise.resolve(""),
+    ]);
+
     const iconDataUri = `data:image/svg+xml;base64,${Buffer.from(iconSvg).toString("base64")}`;
+    const borderDataUri = borderSvg
+      ? `data:image/svg+xml;base64,${Buffer.from(borderSvg).toString("base64")}`
+      : "";
 
     const appLogoRes = await fetch("https://svglogo.dev/logo192.png");
     const appLogoDataUri = `data:image/png;base64,${Buffer.from(
@@ -82,25 +102,45 @@ export async function GET(req: Request) {
             <div
               style={{
                 display: "flex",
-                width: "420px",
-                height: "420px",
-                borderRadius: `${(logo.borderRadius / 512) * 420}px`,
+                width: `${size}px`,
+                height: `${size}px`,
+                borderRadius: `${(logo.borderRadius / 512) * size}px`,
                 border:
                   logo.borderWidth > 0
-                    ? `${(logo.borderWidth / 512) * 420}px solid ${logo.borderColor}`
+                    ? `${(logo.borderWidth / 512) * size}px solid ${logo.borderColor}`
                     : "none",
                 ...bgStyle,
                 alignItems: "center",
                 justifyContent: "center",
+                position: "relative",
               }}
             >
-              {/** biome-ignore lint/performance/noImgElement: need this for og */}
+              {/* Border/Outline Layers */}
+              {borderDataUri &&
+                iconOutlineOffsets.map((offset, i) => (
+                  <img
+                    key={i}
+                    alt=""
+                    src={borderDataUri}
+                    style={{
+                      position: "absolute",
+                      width: `${iconPx}px`,
+                      height: `${iconPx}px`,
+                      left: `${(size - iconPx) / 2 + offset.x}px`,
+                      top: `${(size - iconPx) / 2 + offset.y}px`,
+                    }}
+                  />
+                ))}
+              {/* Main Icon */}
               <img
                 alt="Logo Icon"
                 src={iconDataUri}
                 style={{
-                  width: `${logo.iconSize}%`,
-                  height: `${logo.iconSize}%`,
+                  position: "absolute",
+                  width: `${iconPx}px`,
+                  height: `${iconPx}px`,
+                  left: `${(size - iconPx) / 2}px`,
+                  top: `${(size - iconPx) / 2}px`,
                 }}
               />
             </div>
