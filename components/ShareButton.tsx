@@ -9,6 +9,7 @@ import {
 import { Button, Input, Modal, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import { trackEvent } from "#/lib/analytics";
 import { useLogoStore } from "#/store/logoStore";
 
 export function ShareButton() {
@@ -17,7 +18,10 @@ export function ShareButton() {
   const [copied, setCopied] = useState(false);
   const logo = useLogoStore((s) => s.present);
 
-  const open = () => setIsOpen(true);
+  const open = () => {
+    setIsOpen(true);
+    trackEvent("open share modal");
+  };
   const dismiss = () => setIsOpen(false);
 
   useEffect(() => {
@@ -49,6 +53,7 @@ export function ShareButton() {
     if (!shareUrl) return;
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
+    trackEvent("copy share link");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -58,6 +63,7 @@ export function ShareButton() {
       `Check out the logo I made with @svglogo_dev! 🎨✨\n\nEdit here: ${shareUrl}`,
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
+    trackEvent("share on x");
     window.open(url, "_blank");
   };
 

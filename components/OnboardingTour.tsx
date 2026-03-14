@@ -3,6 +3,8 @@
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 
+import { trackEvent } from "#/lib/analytics";
+
 const STORAGE_KEY = "svglogo-onboarding-seen";
 const DESKTOP_QUERY = "(min-width: 768px)";
 const PADDING = 12;
@@ -132,18 +134,24 @@ export default function OnboardingTour() {
 
   if (!isOpen || !step) return null;
 
-  const closeTour = () => {
+  const closeTour = (reason: "skip" | "finish") => {
     window.localStorage.setItem(STORAGE_KEY, "true");
     setIsOpen(false);
+    trackEvent(`onboarding ${reason}`);
   };
 
   const nextStep = () => {
     if (stepIndex === STEPS.length - 1) {
-      closeTour();
+      closeTour("finish");
       return;
     }
 
     setStepIndex((current) => current + 1);
+  };
+
+  const startTour = () => {
+    setStage("tour");
+    trackEvent("onboarding start");
   };
 
   return (
@@ -163,10 +171,10 @@ export default function OnboardingTour() {
           </p>
 
           <div className="mt-6 flex items-center justify-between gap-3">
-            <Button variant="ghost" onPress={closeTour}>
+            <Button variant="ghost" onPress={() => closeTour("skip")}>
               Skip
             </Button>
-            <Button variant="primary" onPress={() => setStage("tour")}>
+            <Button variant="primary" onPress={startTour}>
               Start tour
             </Button>
           </div>
@@ -204,7 +212,7 @@ export default function OnboardingTour() {
             </p>
 
             <div className="mt-5 flex items-center justify-between gap-3">
-              <Button variant="ghost" onPress={closeTour}>
+              <Button variant="ghost" onPress={() => closeTour("skip")}>
                 Skip
               </Button>
               <div className="flex gap-2">
