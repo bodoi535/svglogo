@@ -29,7 +29,7 @@ export function CollectionsButton() {
   };
 
   return (
-    <div className="pointer-events-auto absolute bottom-6 right-6 z-50">
+    <div className="pointer-events-auto">
       <Popover>
         <Popover.Trigger>
           <Button size="lg">
