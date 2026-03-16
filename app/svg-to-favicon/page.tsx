@@ -65,6 +65,7 @@ export default function SvgToFaviconPage() {
             "Yes. That is the ideal approach because you preserve one editable master and export the raster sizes or containers your app needs.",
         },
       ]}
+      pageUrl="https://svglogo.dev/svg-to-favicon"
       primaryCta={{
         href: "/",
         label: "Start with a favicon-ready icon",

@@ -65,6 +65,7 @@ export default function SvgToPngPage() {
             "Yes. Transparent PNG output is commonly used for overlays, documentation, and brand assets placed on different backgrounds.",
         },
       ]}
+      pageUrl="https://svglogo.dev/svg-to-png"
       primaryCta={{
         href: "/",
         label: "Design and export a logo",

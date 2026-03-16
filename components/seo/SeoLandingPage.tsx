@@ -23,6 +23,7 @@ type SeoLandingPageProps = {
     label: string;
     description: string;
   }>;
+  pageUrl?: string;
 };
 
 export function SeoLandingPage({
@@ -36,9 +37,52 @@ export function SeoLandingPage({
   faq,
   primaryCta,
   relatedPages,
+  pageUrl,
 }: SeoLandingPageProps) {
+  const schemas = [
+    ...(pageUrl
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://svglogo.dev/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: title,
+                item: pageUrl,
+              },
+            ],
+          },
+        ]
+      : []),
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: structured data
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+      />
       <section className="mx-auto max-w-6xl px-6 py-16 sm:px-8 lg:px-10">
         <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-sm sm:p-12">
           <p className="text-sm font-medium uppercase tracking-[0.22em] text-accent">

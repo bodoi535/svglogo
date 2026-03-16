@@ -65,6 +65,7 @@ export default function SvgToIcoPage() {
             "Yes. The app is designed for browser-based logo and icon creation, so you can generate the starting SVG without Illustrator, Figma, or Sketch.",
         },
       ]}
+      pageUrl="https://svglogo.dev/svg-to-ico"
       primaryCta={{
         href: "/",
         label: "Create an SVG icon",

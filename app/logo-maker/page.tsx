@@ -65,6 +65,7 @@ export default function LogoMakerPage() {
             "It fits developers, solo founders, indie products, hackathon teams, and anyone who needs a practical browser-based logo workflow.",
         },
       ]}
+      pageUrl="https://svglogo.dev/logo-maker"
       primaryCta={{
         href: "/",
         label: "Open the logo maker",

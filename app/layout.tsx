@@ -24,6 +24,22 @@ export const metadata: Metadata = {
   title: "SVG Logo Maker - Free SVG Logo Generator",
   description:
     "Free SVG logo maker to create professional icons and brand marks in seconds. Customize icons, colors, and backgrounds. Export high-quality SVG, PNG, and ICO from your browser.",
+  keywords: [
+    "svg logo maker",
+    "svg logo generator",
+    "free logo maker",
+    "logo svg generator",
+    "svg logo creator",
+    "free svg logo",
+    "icon logo maker",
+    "logo maker online",
+    "svg to png",
+    "svg to ico",
+    "svg to favicon",
+    "favicon generator",
+    "brand mark creator",
+    "logo design tool",
+  ],
   robots: "index, follow, max-image-preview:large",
   alternates: {
     canonical: "https://svglogo.dev/",
@@ -61,17 +77,42 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "svglogo.dev - SVG Logo Maker",
-    url: "https://svglogo.dev/",
-    applicationCategory: "DesignApplication",
-    operatingSystem: "Web",
-    description:
-      "Free SVG logo maker to create professional icons and brand marks in seconds. Customize icons, colors, and backgrounds. Export high-quality SVG, PNG, and ICO from your browser.",
-    image: "https://svglogo.dev/og/banner.png",
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "svglogo.dev",
+      url: "https://svglogo.dev/",
+      description:
+        "Free SVG logo maker to create professional icons and brand marks in seconds.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "svglogo.dev - SVG Logo Maker",
+      url: "https://svglogo.dev/",
+      applicationCategory: "DesignApplication",
+      operatingSystem: "Web",
+      description:
+        "Free SVG logo maker to create professional icons and brand marks in seconds. Customize icons, colors, and backgrounds. Export high-quality SVG, PNG, and ICO from your browser.",
+      image: "https://svglogo.dev/og/banner.png",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      featureList: [
+        "Create SVG logos from icons",
+        "Customize colors, gradients, and backgrounds",
+        "Export to SVG, PNG, and ICO formats",
+        "Generate favicons from SVG",
+        "Convert SVG to PNG",
+        "Convert SVG to ICO",
+        "Browser-based, no signup required",
+        "Share logos with a link",
+      ],
+    },
+  ];
 
   return (
     <html lang="en">
