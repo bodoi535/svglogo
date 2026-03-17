@@ -9,6 +9,7 @@ import { InfoModal } from "./InfoModal";
 
 const FEEDBACK_URL = "https://x.com/monawwarx";
 const DISCORD_URL = "https://discord.gg/qjxWBqtYZu";
+const YOUTUBE_URL = "https://youtube.com/@monawwar";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -78,6 +79,21 @@ export function FABs() {
           </Tooltip.Trigger>
           <Tooltip.Content placement="left">
             <p>Share your feedback</p>
+          </Tooltip.Content>
+        </Tooltip>
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <Tooltip delay={0}>
+          <Tooltip.Trigger>
+            <a href={YOUTUBE_URL} target="_blank" rel="noreferrer" data-umami-event="click youtube link">
+              <Button variant="ghost" isIconOnly aria-label="YouTube">
+                <Icon icon="simple-icons:youtube" width={12} height={12} />
+              </Button>
+            </a>
+          </Tooltip.Trigger>
+          <Tooltip.Content placement="left">
+            <p>YouTube</p>
           </Tooltip.Content>
         </Tooltip>
       </motion.div>
