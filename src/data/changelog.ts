@@ -7,18 +7,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: "Mar 17, 2026",
     changes: [
+      "Added Advanced Export option",
       "Multiple gradient stop",
       "Added Tabler and Material Design icon sets",
       "Added global icon search across all sets",
       "Added icon rotation control",
       "Added mobile view",
       "Added copy PNG to clipboard shortcut",
-    ],
-  },
-  {
-    date: "Mar 16, 2026",
-    changes: [
-      "Improved SVG fetch caching and performance",
     ],
   },
   {
