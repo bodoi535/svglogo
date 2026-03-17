@@ -51,7 +51,7 @@ export function InfoModal({ isOpen, onClose, defaultTab, highlightLatest }: Info
                 </Tabs.ListContainer>
 
                 <Tabs.Panel id="about" className="h-64 overflow-y-auto px-4 py-4">
-                  <div className="flex flex-col gap-3 text-sm text-muted justify-between h-full">
+                  <div className="flex flex-col gap-3 text-sm text-muted h-full">
                     <p>
                       SVGLogo is a free, browser-based logo generator. Pick any
                       icon from 10+ icon sets, customize colors, backgrounds, and
@@ -62,6 +62,10 @@ export function InfoModal({ isOpen, onClose, defaultTab, highlightLatest }: Info
                     <p>
                       No sign-up required. Everything runs locally in your
                       browser — your designs stay private.
+                    </p>
+                    <span className="flex-1"/>
+                    <p>
+                      The project is open-source and completely free to use.
                     </p>
                   </div>
                 </Tabs.Panel>

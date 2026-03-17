@@ -1,14 +1,17 @@
 import { Button, Dropdown, Label } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useAnimate } from "framer-motion";
+import { useState } from "react";
 import { exportSvg } from "#/commands/export/export-svg";
 import { exportPng } from "#/commands/export/export-png";
 import { exportIco } from "#/commands/export/export-ico";
 import { randomizeLogo } from "#/commands/logo/randomize-logo";
 import { trackEvent } from "#/lib/analytics";
+import { InfoModal } from "./InfoModal";
 
 export function MobileTopBar() {
   const [scope, animate] = useAnimate();
+  const [infoOpen, setInfoOpen] = useState(false);
 
   const handleAction = (key: React.Key) => {
     if (key === "svg") void exportSvg();
@@ -27,14 +30,17 @@ export function MobileTopBar() {
   };
 
   return (
+    <>
     <div className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 pt-4 md:hidden">
-      <img
-        src="/logo512.png"
-        alt="svglogo.dev"
-        width={40}
-        height={40}
-        className="rounded-xl"
-      />
+      <button type="button" onClick={() => setInfoOpen(true)}>
+        <img
+          src="/logo512.png"
+          alt="svglogo.dev"
+          width={40}
+          height={40}
+          className="rounded-xl"
+        />
+      </button>
       <div className="flex items-center gap-2">
         <Button
           isIconOnly
@@ -67,5 +73,7 @@ export function MobileTopBar() {
         </Dropdown>
       </div>
     </div>
+    <InfoModal isOpen={infoOpen} onClose={() => setInfoOpen(false)} />
+    </>
   );
 }
