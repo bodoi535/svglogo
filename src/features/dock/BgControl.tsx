@@ -1,4 +1,5 @@
-import { Label, Slider, Switch } from "@heroui/react";
+import { Button, Label, Slider, Switch } from "@heroui/react";
+import { Icon } from "@iconify/react";
 import type { GradientStop } from "#/domain/logo/logo.types";
 import { useLogoState, useLogoActions } from "#/queries/logo/use-logo-state";
 import { InlineColorPicker } from "./InlineColorPicker";
@@ -33,7 +34,7 @@ export function BgControl() {
   };
 
   return (
-    <div className="flex w-52 flex-col gap-4">
+    <div className="flex w-72 flex-col gap-4">
       <div className="flex items-center justify-between">
         <Label className="text-sm text-muted">Gradient</Label>
         <Switch isSelected={isGradient} onChange={toggleGradient}>
@@ -68,8 +69,24 @@ export function BgControl() {
           }
           onStop={(i, stop) =>
             set((d) => {
-              if (d.background.type === "gradient")
-                d.background.stops[i] = stop;
+              if (d.background.type === "gradient") d.background.stops[i] = stop;
+            })
+          }
+          onAddStop={() =>
+            set((d) => {
+              if (d.background.type !== "gradient") return;
+              const stops = d.background.stops;
+              const last = stops[stops.length - 1];
+              const secondLast = stops[stops.length - 2];
+              const midPosition = Math.round((secondLast.position + last.position) / 2);
+              stops.splice(stops.length - 1, 0, { color: last.color, position: midPosition });
+            })
+          }
+          onRemoveStop={(i) =>
+            set((d) => {
+              if (d.background.type !== "gradient") return;
+              if (d.background.stops.length <= 2) return;
+              d.background.stops.splice(i, 1);
             })
           }
         />
@@ -83,11 +100,15 @@ function GradientTab({
   stops,
   onDirection,
   onStop,
+  onAddStop,
+  onRemoveStop,
 }: {
   direction: number;
-  stops: [GradientStop, GradientStop];
+  stops: GradientStop[];
   onDirection: (v: number) => void;
   onStop: (i: number, stop: GradientStop) => void;
+  onAddStop: () => void;
+  onRemoveStop: (i: number) => void;
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -112,13 +133,8 @@ function GradientTab({
       </Slider>
 
       {stops.map((stop, i) => (
-        <div
-          key={i === 0 ? "start-stop" : "end-stop"}
-          className="flex items-center gap-3"
-        >
-          <span className="text-xs text-muted w-12 shrink-0">
-            Stop {i + 1}
-          </span>
+        <div key={`stop-${i}`} className="flex items-center gap-3">
+          <span className="text-xs text-muted w-12 shrink-0">Stop {i + 1}</span>
           <InlineColorPicker
             value={stop.color}
             onChange={(c) => onStop(i, { ...stop, color: c })}
@@ -138,11 +154,31 @@ function GradientTab({
               <Slider.Thumb />
             </Slider.Track>
           </Slider>
-          <span className="text-xs text-muted w-8 text-right">
-            {stop.position}%
-          </span>
+          <span className="text-xs text-muted w-8 text-right">{stop.position}%</span>
+          {stops.length > 2 && (
+            <Button
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              aria-label="Remove stop"
+              onPress={() => onRemoveStop(i)}
+              className="min-w-5 w-5 h-5 p-0"
+            >
+              <Icon icon="lucide:x" width={10} height={10} />
+            </Button>
+          )}
         </div>
       ))}
+
+      <Button
+        size="sm"
+        variant="outline"
+        onPress={onAddStop}
+        className="w-full"
+      >
+        <Icon icon="lucide:plus" width={12} height={12} />
+        Add stop
+      </Button>
     </div>
   );
 }

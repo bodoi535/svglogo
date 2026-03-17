@@ -5,7 +5,7 @@ export type Background =
   | {
       type: "gradient";
       direction: number;
-      stops: [GradientStop, GradientStop];
+      stops: GradientStop[];
     };
 
 export interface LogoState {

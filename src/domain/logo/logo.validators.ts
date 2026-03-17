@@ -31,22 +31,22 @@ export function sanitizeBackground(value: unknown): Background {
   }
 
   if (bg.type === "gradient") {
-    const stopsRaw = Array.isArray(bg.stops) ? bg.stops : [];
-    const s0 = (stopsRaw[0] ?? {}) as Record<string, unknown>;
-    const s1 = (stopsRaw[1] ?? {}) as Record<string, unknown>;
+    const stopsRaw = Array.isArray(bg.stops) && bg.stops.length >= 2 ? bg.stops : [];
+    const sanitizedStops = stopsRaw.map((s: unknown, i: number) => {
+      const raw = (s ?? {}) as Record<string, unknown>;
+      return {
+        color: safeColor(raw.color, i === 0 ? "#6366f1" : "#a855f7"),
+        position: clamp(raw.position, 0, 100, i === 0 ? 0 : 100),
+      };
+    });
+    const stops = sanitizedStops.length >= 2 ? sanitizedStops : [
+      { color: "#6366f1", position: 0 },
+      { color: "#a855f7", position: 100 },
+    ];
     return {
       type: "gradient",
       direction: clamp(bg.direction, 0, 360, 135),
-      stops: [
-        {
-          color: safeColor(s0.color, "#6366f1"),
-          position: clamp(s0.position, 0, 100, 0),
-        },
-        {
-          color: safeColor(s1.color, "#a855f7"),
-          position: clamp(s1.position, 0, 100, 100),
-        },
-      ],
+      stops,
     };
   }
 
@@ -97,12 +97,12 @@ export function areLogosEqual(a: LogoState, b: LogoState) {
     return a.background.color === b.background.color;
   }
   if (a.background.type === "gradient" && b.background.type === "gradient") {
-    return (
-      a.background.direction === b.background.direction &&
-      a.background.stops[0].color === b.background.stops[0].color &&
-      a.background.stops[0].position === b.background.stops[0].position &&
-      a.background.stops[1].color === b.background.stops[1].color &&
-      a.background.stops[1].position === b.background.stops[1].position
+    if (a.background.direction !== b.background.direction) return false;
+    if (a.background.stops.length !== b.background.stops.length) return false;
+    return a.background.stops.every(
+      (s, i) =>
+        s.color === b.background.stops[i].color &&
+        s.position === b.background.stops[i].position,
     );
   }
   return false;
@@ -149,16 +149,12 @@ export function isLogoStateLike(value: unknown): value is {
     if (
       typeof bg.direction !== "number" ||
       !Array.isArray(bg.stops) ||
-      bg.stops.length !== 2
+      bg.stops.length < 2
     ) {
       return false;
     }
-    const [a, b] = bg.stops as Array<Record<string, unknown>>;
-    return (
-      typeof a?.color === "string" &&
-      typeof a?.position === "number" &&
-      typeof b?.color === "string" &&
-      typeof b?.position === "number"
+    return (bg.stops as Array<Record<string, unknown>>).every(
+      (s) => typeof s?.color === "string" && typeof s?.position === "number",
     );
   }
   return false;

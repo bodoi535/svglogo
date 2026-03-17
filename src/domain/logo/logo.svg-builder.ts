@@ -4,7 +4,7 @@ import type { Background, LogoState } from "./logo.types";
 export function buildBackgroundStyle(bg: Background): string {
   if (bg.type === "solid") return bg.color;
   const { direction, stops } = bg;
-  return `linear-gradient(${direction}deg, ${stops[0].color} ${stops[0].position}%, ${stops[1].color} ${stops[1].position}%)`;
+  return `linear-gradient(${direction}deg, ${stops.map((s) => `${s.color} ${s.position}%`).join(", ")})`;
 }
 
 export function buildBackgroundCss(bg: Background): React.CSSProperties {
@@ -13,7 +13,7 @@ export function buildBackgroundCss(bg: Background): React.CSSProperties {
   }
   const { direction, stops } = bg;
   return {
-    background: `linear-gradient(${direction}deg, ${stops[0].color} ${stops[0].position}%, ${stops[1].color} ${stops[1].position}%)`,
+    background: `linear-gradient(${direction}deg, ${stops.map((s) => `${s.color} ${s.position}%`).join(", ")})`,
   };
 }
 
@@ -70,8 +70,7 @@ export function buildCanvasSvgSync(
     const y2 = 50 + 50 * Math.sin(rad + Math.PI / 2);
     bgDef = `<defs>
       <linearGradient id="bg-grad" x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%">
-        <stop offset="${stops[0].position}%" stop-color="${stops[0].color}"/>
-        <stop offset="${stops[1].position}%" stop-color="${stops[1].color}"/>
+        ${stops.map((s) => `<stop offset="${s.position}%" stop-color="${s.color}"/>`).join("\n        ")}
       </linearGradient>
     </defs>`;
     bgFill = "url(#bg-grad)";
