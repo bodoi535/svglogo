@@ -25,4 +25,16 @@ export const TESTIMONIALS: Testimonial[] = [
     source: "reddit",
     url: "https://reddit.com/user/Developer_Memento",
   },
+  {
+    quote: "Love this. I will give it a try! I am a designer and love this ha!",
+    author: "u/hparamore",
+    source: "reddit",
+    url: "https://reddit.com/user/hparamore",
+  },
+  {
+    quote: "Super polished and great for this use case. Nice work!",
+    author: "u/webmonarch",
+    source: "reddit",
+    url: "https://reddit.com/user/webmonarch",
+  },
 ];
