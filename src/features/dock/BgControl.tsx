@@ -123,7 +123,7 @@ function GradientTab({
         <div className="flex justify-between">
           <Label className="text-sm text-muted">Angle</Label>
           <Slider.Output className="text-xs text-muted">
-            {() => `${direction}\u00B0`}
+            {() => `${direction}`}
           </Slider.Output>
         </div>
         <Slider.Track>

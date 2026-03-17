@@ -185,7 +185,6 @@ export function Dock() {
                     value={iconRotation}
                     min={0}
                     max={360}
-                    unit="\u00B0"
                     onChange={(v) =>
                       set((d) => {
                         d.iconRotation = v;
