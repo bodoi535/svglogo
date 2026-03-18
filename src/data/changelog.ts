@@ -8,6 +8,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     date: "Mar 18, 2026",
     changes: [
       "Smarter randomize",
+      "Added Icon color option in Randomize"
     ],
   },
   {

@@ -9,16 +9,16 @@ export function getSmartLogoVisual(
   iconList: string[],
   fallbackIconName = "lucide:heart",
 ) {
-  const background = randomBackground();
+  const { bg, palette } = randomBackground();
   return {
     iconName: iconList.length > 0 ? randomFrom(iconList) : fallbackIconName,
-    iconColor: pickContrastingIconColor(background),
+    iconColor: pickIconColor(bg, palette),
     iconBorderWidth: 0,
     iconSize: randomFrom(SAFE_ICON_SIZES),
     iconRotation: 0,
     borderRadius: randomFrom(SAFE_BORDER_RADII),
     borderWidth: 0,
-    background,
+    background: bg,
   };
 }
 
@@ -26,11 +26,11 @@ export function getRandomLogoVisual(
   iconList: string[],
   fallbackIconName = "lucide:heart",
 ) {
-  const background = randomBackground();
+  const { bg, palette } = randomBackground();
   return {
     iconName: iconList.length > 0 ? randomFrom(iconList) : fallbackIconName,
-    iconColor: pickContrastingIconColor(background),
-    background,
+    iconColor: pickIconColor(bg, palette),
+    background: bg,
   };
 }
 
@@ -45,11 +45,11 @@ function randomBeautifulHue(): number {
   return n < 70 ? n : n + 91;
 }
 
-function randomBackground(): Background {
+function randomBackground(): { bg: Background; palette?: string[] } {
   // Solid: pick a curated color from nice-color-palettes
   if (Math.random() < SOLID_CHANCE) {
     const palette = randomFrom(niceColorPalettes as string[][]);
-    return { type: "solid", color: randomFrom(palette) };
+    return { bg: { type: "solid", color: randomFrom(palette) }, palette };
   }
 
   const isDark = Math.random() < DARK_CHANCE;
@@ -86,13 +86,30 @@ function randomBackground(): Background {
   );
 
   return {
-    type: "gradient",
-    direction: randomInt(90, 225),
-    stops: hues.map((h, i) => ({
-      color: hslToHex(h, sat + randomInt(-4, 4), lights[i]),
-      position: Math.round((100 * i) / (hues.length - 1)),
-    })),
+    bg: {
+      type: "gradient",
+      direction: randomInt(90, 225),
+      stops: hues.map((h, i) => ({
+        color: hslToHex(h, sat + randomInt(-4, 4), lights[i]),
+        position: Math.round((100 * i) / (hues.length - 1)),
+      })),
+    },
   };
+}
+
+function pickIconColor(background: Background, palette?: string[]): string {
+  // For solid backgrounds, try palette colors first — more interesting than just white/black
+  if (background.type === "solid" && palette && palette.length > 1) {
+    const bg = background.color;
+    const candidates = palette.filter((c) => c.toLowerCase() !== bg.toLowerCase());
+    // Pick the palette color with the highest contrast against the background
+    const best = candidates.reduce((a, b) =>
+      contrastRatio(a, bg) >= contrastRatio(b, bg) ? a : b,
+    );
+    // Only use it if contrast is sufficient (≥3), otherwise fall back to white/black
+    if (contrastRatio(best, bg) >= 3) return best;
+  }
+  return pickContrastingIconColor(background);
 }
 
 function pickContrastingIconColor(background: Background): string {

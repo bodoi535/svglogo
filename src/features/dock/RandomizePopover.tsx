@@ -10,6 +10,7 @@ export function RandomizePopover() {
   const [isOpen, setIsOpen] = useState(false);
   const [custom, setCustom] = useState(false);
   const [randomizeIcon, setRandomizeIcon] = useState(true);
+  const [randomizeIconColor, setRandomizeIconColor] = useState(true);
   const [randomizeBackground, setRandomizeBackground] = useState(true);
 
   const runRandomize = () => {
@@ -18,9 +19,9 @@ export function RandomizePopover() {
       void randomizeLogo({ smart: true });
       trackEvent("randomize logo", { mode: "smart" });
     } else {
-      if (!randomizeIcon && !randomizeBackground) return;
-      void randomizeLogo({ icon: randomizeIcon, background: randomizeBackground });
-      trackEvent("randomize logo", { mode: "custom", icon: randomizeIcon, background: randomizeBackground });
+      if (!randomizeIcon && !randomizeIconColor && !randomizeBackground) return;
+      void randomizeLogo({ icon: randomizeIcon, iconColor: randomizeIconColor, background: randomizeBackground });
+      trackEvent("randomize logo", { mode: "custom", icon: randomizeIcon, icon_color: randomizeIconColor, background: randomizeBackground });
     }
   };
 
@@ -83,7 +84,15 @@ export function RandomizePopover() {
                     </Switch>
                   </div>
                   <div className="flex items-center justify-between">
-                    <Label className="text-sm text-muted">Background</Label>
+                    <Label className="text-sm text-muted">Icon Color</Label>
+                    <Switch isSelected={randomizeIconColor} onChange={setRandomizeIconColor}>
+                      <Switch.Control>
+                        <Switch.Thumb />
+                      </Switch.Control>
+                    </Switch>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm text-muted">Background Color</Label>
                     <Switch isSelected={randomizeBackground} onChange={setRandomizeBackground}>
                       <Switch.Control>
                         <Switch.Thumb />
@@ -96,7 +105,7 @@ export function RandomizePopover() {
               <Button
                 size="sm"
                 onPress={runRandomize}
-                isDisabled={custom && !randomizeIcon && !randomizeBackground}
+                isDisabled={custom && !randomizeIcon && !randomizeIconColor && !randomizeBackground}
                 className="w-full"
               >
                 Randomize
