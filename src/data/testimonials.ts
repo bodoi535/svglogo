@@ -37,4 +37,10 @@ export const TESTIMONIALS: Testimonial[] = [
     source: "reddit",
     url: "https://www.reddit.com/r/SideProject/comments/1rv9hot/comment/oasc66n",
   },
+  {
+    quote: "This solves a real workflow problem.",
+    author: "u/iurp",
+    source: "reddit",
+    url: "https://www.reddit.com/r/SideProject/comments/1rv9hot/comment/ob2m99i",
+  },
 ];
