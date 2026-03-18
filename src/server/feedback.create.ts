@@ -3,37 +3,52 @@ import { nanoid } from "nanoid";
 import { env } from "cloudflare:workers";
 import { getRequestIP } from "@tanstack/react-start/server";
 
-const DAILY_LIMIT = 5;
+interface RateLimiter {
+  limit: (opts: { key: string }) => Promise<{ success: boolean }>;
+}
 
 export const createFeedbackFn = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => data as { message: string })
+  .inputValidator((data: unknown) => data as { message: string; token: string })
   .handler(async ({ data }) => {
+    const cfEnv = env as {
+      FEEDBACK_KV?: KVNamespace;
+      FEEDBACK_RL?: RateLimiter;
+      TURNSTILE_SECRET?: string;
+    };
+
+    // Turnstile verification
+    const turnstileSecret = cfEnv.TURNSTILE_SECRET;
+
+    if (turnstileSecret) {
+      const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret: turnstileSecret, response: data.token }),
+      });
+      const result = await res.json<{ success: boolean }>();
+      if (!result.success) throw new Error("Verification failed");
+    }
+
+    // Rate limiting
+    const ip = getRequestIP() ?? "unknown";
+    const rl = cfEnv.FEEDBACK_RL;
+    if (rl) {
+      const { success } = await rl.limit({ key: ip });
+      if (!success) throw new Error("Too many requests");
+    }
+
     const message = String(data.message ?? "").trim().slice(0, 2000);
     if (!message) throw new Error("Empty feedback");
 
-    const kv = (env as { FEEDBACK_KV?: KVNamespace }).FEEDBACK_KV;
+    const kv = cfEnv.FEEDBACK_KV;
     if (!kv) throw new Error("FEEDBACK_KV binding is not configured");
-
-    // Rate limit by IP — silent, just throw a generic error
-    const ip = getRequestIP() ?? "unknown";
-    const day = new Date().toISOString().slice(0, 10); // "2026-03-18"
-    const ratKey = `rate:${ip}:${day}`;
-    const count = Number((await kv.get(ratKey)) ?? 0);
-    if (count >= DAILY_LIMIT) throw new Error("Too many requests");
 
     const id = nanoid(10);
     await kv.put(
       id,
       JSON.stringify({ message, createdAt: new Date().toISOString() }),
-      { expirationTtl: 60 * 60 * 24 * 365 }, // 1 year
+      { expirationTtl: 60 * 60 * 24 * 365 },
     );
-
-    // Increment rate counter, expires at end of day
-    const secondsUntilMidnight =
-      86400 - (Math.floor(Date.now() / 1000) % 86400);
-    await kv.put(ratKey, String(count + 1), {
-      expirationTtl: secondsUntilMidnight,
-    });
 
     return { ok: true };
   });

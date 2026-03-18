@@ -70,6 +70,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           {children}
         </TanStackQueryProvider>
         <Scripts />
+        <script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          defer
+        />
         {import.meta.env.PROD && (
           <script
             defer
