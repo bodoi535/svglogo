@@ -136,6 +136,7 @@ export function FeedbackButton() {
               onPress={() => void submit()}
               isDisabled={!message.trim() || status === "loading" || status === "success" || status === "error"}
               className="w-full"
+              data-umami-event="feedback submit"
             >
               {status === "loading" ? "Sending…" : status === "success" ? "Sent!" : status === "error" ? "Try again later" : "Send"}
             </Button>
