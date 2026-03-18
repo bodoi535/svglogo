@@ -7,6 +7,7 @@ import { CollectionsButton } from "#/features/collections/CollectionsButton";
 import { ShareButton } from "#/features/share/ShareButton";
 import { EditorPage } from "./EditorPage";
 import { FABs } from "./FABs";
+import { FeedbackButton } from "./FeedbackButton";
 import { MobileTopBar } from "./MobileTopBar";
 import { OnboardingTour } from "./OnboardingTour";
 
@@ -61,7 +62,7 @@ export function AppShell({
       <MobileTopBar />
 
       <div className="hidden md:block">
-<FABs />
+        <FABs />
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -93,6 +94,9 @@ export function AppShell({
           </motion.div>
           <motion.div variants={itemVariants}>
             <ShareButton />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <FeedbackButton />
           </motion.div>
           <motion.div variants={itemVariants}>
             <CollectionsButton />
