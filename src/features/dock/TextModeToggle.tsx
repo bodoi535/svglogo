@@ -16,6 +16,7 @@ export function TextModeToggle() {
     >
       <div className="flex items-center gap-2 rounded-xl border border-border bg-surface/90 px-2.5 py-1.5 shadow-lg backdrop-blur-xl">
         <Switch
+          size='sm'
           isSelected={textMode}
           onChange={(checked) => {
             updateLogo((d) => { d.textMode = checked; });
@@ -26,7 +27,7 @@ export function TextModeToggle() {
             <Switch.Thumb />
           </Switch.Control>
         </Switch>
-        <span className="text-sm text-muted select-none">Text Mode</span>
+        <span className="text-xs text-muted select-none">Text Mode</span>
       </div>
     </motion.div>
   );
