@@ -6,7 +6,6 @@ import { CollectionsButton } from "#/features/collections/CollectionsButton";
 import { ShareButton } from "#/features/share/ShareButton";
 import { EditorPage } from "./EditorPage";
 import { FABs } from "./FABs";
-import { FeedbackButton } from "./FeedbackButton";
 import { MobileTopBar } from "./MobileTopBar";
 import { OnboardingTour } from "./OnboardingTour";
 
@@ -72,22 +71,7 @@ export function AppShell({
             <ShareButton />
           </motion.div>
           <motion.div variants={itemVariants}>
-            <FeedbackButton />
-          </motion.div>
-          <motion.div variants={itemVariants}>
             <CollectionsButton />
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <a
-              href="https://www.producthunt.com/products/svglogo?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-svglogo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ph-glow inline-block"
-              data-umami-event="click producthunt"
-              data-umami-event-source="editor"
-            >
-              <img alt="SVGLogo - Generate clean, export-ready logos from icons in seconds. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1101768&amp;theme=dark&amp;t=1773894483224" />
-            </a>
           </motion.div>
         </motion.div>
       </div>
