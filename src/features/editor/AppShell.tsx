@@ -1,6 +1,5 @@
 import { type Variants, motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { Tooltip } from "@heroui/react";
 import type { LogoState } from "#/domain/logo/logo.types";
 import { loadLogoFromState } from "#/commands/logo/load-logo";
 import { CollectionsButton } from "#/features/collections/CollectionsButton";
@@ -69,29 +68,6 @@ export function AppShell({
           animate="visible"
           className="absolute bottom-4 right-4 z-50 flex flex-col gap-2 items-end"
         >
-          <motion.div variants={itemVariants}>
-            <Tooltip delay={300}>
-              <Tooltip.Trigger>
-                <a
-                  href="https://webbin.dev?ref=svglogo.dev"
-                  target="_blank"
-                  rel="noreferrer"
-                  data-umami-event="click webbin"
-                >
-                  <img
-                    src="https://storage.webbin.dev/images/webbin.png"
-                    alt="Webbin"
-                    width={40}
-                    height={40}
-                    className="rounded-xl border-2 dark:border"
-                  />
-                </a>
-              </Tooltip.Trigger>
-              <Tooltip.Content>
-                <p>Discover the best AI web designs.</p>
-              </Tooltip.Content>
-            </Tooltip>
-          </motion.div>
           <motion.div variants={itemVariants}>
             <ShareButton />
           </motion.div>
