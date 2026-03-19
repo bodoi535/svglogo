@@ -109,3 +109,16 @@ body {
 input[type="color"] {
   cursor: pointer;
 }
+
+@keyframes ph-border-glow {
+  0% { box-shadow: 0 0 0 0 transparent; }
+  20% { box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6), 0 0 12px rgba(59, 130, 246, 0.15); }
+  50% { box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4), 0 0 8px rgba(59, 130, 246, 0.1); }
+  70% { box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.12); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.ph-glow {
+  border-radius: 0.5rem;
+  animation: ph-border-glow 3s ease-in-out 1.5s 1;
+}

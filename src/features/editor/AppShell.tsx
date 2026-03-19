@@ -106,6 +106,7 @@ export function AppShell({
               href="https://www.producthunt.com/products/svglogo?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-svglogo"
               target="_blank"
               rel="noopener noreferrer"
+              className="ph-glow inline-block"
             >
               <img alt="SVGLogo - Generate clean, export-ready logos from icons in seconds. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1101768&amp;theme=dark&amp;t=1773894483224" />
             </a>
