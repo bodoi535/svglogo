@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import { useState } from "react";
 import { trackEvent } from "#/lib/analytics";
 import { useChangelogStatus } from "#/queries/changelog/use-changelog-status";
+import { getRandomizeStats } from "#/commands/logo/randomize-logo";
 import { InfoModal } from "./InfoModal";
 import { StatsModal } from "./StatsModal";
 import { CreatorPlanButton } from "../creator-plan/CreatorPlanButton";
@@ -33,6 +34,7 @@ export function FABs() {
   const [defaultTab, setDefaultTab] = useState<string | undefined>();
   const [highlightLatest, setHighlightLatest] = useState(false);
   const { hasNew, markSeen } = useChangelogStatus();
+  const showStats = Object.values(getRandomizeStats()).some((v) => v > 50);
 
   function openInfo() {
     const wasNew = hasNew;
@@ -90,24 +92,26 @@ export function FABs() {
         </Tooltip>
       </motion.div>
 
-      <motion.div variants={itemVariants}>
-        <Tooltip delay={0}>
-          <Tooltip.Trigger>
-            <Button
-              aria-label="Show stats"
-              onPress={() => setStatsOpen(true)}
-              isIconOnly
-              variant="ghost"
-              data-umami-event="open stats modal"
-            >
-              <Icon icon="lucide:bar-chart-2" width={18} height={18} />
-            </Button>
-          </Tooltip.Trigger>
-          <Tooltip.Content placement="left">
-            <p>Your stats</p>
-          </Tooltip.Content>
-        </Tooltip>
-      </motion.div>
+      {showStats && (
+        <motion.div variants={itemVariants}>
+          <Tooltip delay={0}>
+            <Tooltip.Trigger>
+              <Button
+                aria-label="Show stats"
+                onPress={() => setStatsOpen(true)}
+                isIconOnly
+                variant="ghost"
+                data-umami-event="open stats modal"
+              >
+                <Icon icon="lucide:bar-chart-2" width={18} height={18} />
+              </Button>
+            </Tooltip.Trigger>
+            <Tooltip.Content placement="left">
+              <p>Your stats</p>
+            </Tooltip.Content>
+          </Tooltip>
+        </motion.div>
+      )}
 
       <InfoModal
         isOpen={isOpen}

@@ -1,7 +1,7 @@
 import { Button, Label, Popover, Switch, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { randomizeLogo } from "#/commands/logo/randomize-logo";
 import { trackEvent } from "#/lib/analytics";
 import { useLogoStore } from "#/store/logo-store";
@@ -19,7 +19,12 @@ export function RandomizePopover() {
 
   const nothingSelected = custom && !randomizeBackground && (textMode ? (!randomizeFont && !randomizeFontColor) : (!randomizeIcon && !randomizeIconColor));
 
+  const lastRun = useRef(0);
+
   const runRandomize = () => {
+    const now = Date.now();
+    if (now - lastRun.current < 400) return;
+    lastRun.current = now;
     setDiceRotation((r) => r + 360);
     if (!custom) {
       void randomizeLogo({ smart: true });
