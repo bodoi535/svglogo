@@ -5,6 +5,7 @@ import { useState } from "react";
 import { trackEvent } from "#/lib/analytics";
 import { useChangelogStatus } from "#/queries/changelog/use-changelog-status";
 import { InfoModal } from "./InfoModal";
+import { StatsModal } from "./StatsModal";
 import { CreatorPlanButton } from "../creator-plan/CreatorPlanButton";
 
 const X_URL = "https://x.com/monawwarx";
@@ -28,6 +29,7 @@ const itemVariants: Variants = {
 
 export function FABs() {
   const [isOpen, setIsOpen] = useState(false);
+  const [statsOpen, setStatsOpen] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string | undefined>();
   const [highlightLatest, setHighlightLatest] = useState(false);
   const { hasNew, markSeen } = useChangelogStatus();
@@ -88,12 +90,32 @@ export function FABs() {
         </Tooltip>
       </motion.div>
 
+      <motion.div variants={itemVariants}>
+        <Tooltip delay={0}>
+          <Tooltip.Trigger>
+            <Button
+              aria-label="Show stats"
+              onPress={() => setStatsOpen(true)}
+              isIconOnly
+              variant="ghost"
+              data-umami-event="open stats modal"
+            >
+              <Icon icon="lucide:bar-chart-2" width={18} height={18} />
+            </Button>
+          </Tooltip.Trigger>
+          <Tooltip.Content placement="left">
+            <p>Your stats</p>
+          </Tooltip.Content>
+        </Tooltip>
+      </motion.div>
+
       <InfoModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         defaultTab={defaultTab}
         highlightLatest={highlightLatest}
       />
+      <StatsModal isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
     </motion.div>
   );
 }
