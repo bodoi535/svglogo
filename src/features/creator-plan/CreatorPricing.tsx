@@ -10,6 +10,7 @@ import {
   PRICE_MONTHLY_EARLY,
   PRICE_MONTHLY_REGULAR,
 } from "#/data/creator-plan";
+import { ArrowRight } from "@gravity-ui/icons";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -77,12 +78,14 @@ export function CreatorPricing() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-surface overflow-hidden">
+      <div className="overflow-x-auto rounded-2xl border border-border">
+      <div className="w-[640px] md:w-full bg-surface">
         {/* Header row */}
         <div className="grid grid-cols-3 border-b border-border">
           <div className="p-5 col-span-1">
-            <p className="text-sm font-medium text-muted">Features</p>
-          </div>
+                <p className="text-sm font-medium text-muted">Features</p>
+                <p className="text-xs md:hidden text-muted/60 pt-4">Scroll to the right <ArrowRight className="w-3 h-3 inline" /> </p>
+            </div>
           {/* Free */}
           <div className="p-5 border-l border-border flex flex-col gap-1">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted/50">Free</p>
@@ -131,6 +134,7 @@ export function CreatorPricing() {
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       <p className="text-center text-xs text-muted/60 mt-4">
