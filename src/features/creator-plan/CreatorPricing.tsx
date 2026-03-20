@@ -19,7 +19,7 @@ const FEATURES: { label: string; free: boolean; creator: boolean }[] = [
   { label: "300,000+ icons", free: true, creator: true },
   { label: "Multi-stop gradients", free: true, creator: true },
   { label: "Share with a link", free: true, creator: true },
-  { label: "Collections (local)", free: true, creator: true },
+  { label: "Sync Collections", free: true, creator: true },
   { label: "Unlimited advanved export", free: true, creator: true },
   { label: "Brand kit download", free: false, creator: true },
   { label: "Premium fonts & icon sets", free: false, creator: true },
@@ -33,7 +33,6 @@ const FEATURES: { label: string; free: boolean; creator: boolean }[] = [
   { label: "Social media assets export", free: false, creator: true },
   { label: "App Storae & home screen previews", free: false, creator: true },
   { label: "Logo variants (light/dark/transparent)", free: false, creator: true },
-  { label: "Sync collections across devices", free: false, creator: true },
   { label: "Priority support + Discord", free: false, creator: true },
 ];
 
