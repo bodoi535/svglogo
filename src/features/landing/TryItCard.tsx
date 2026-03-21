@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Card, CardLabel, CardTitle, CardDesc } from './BentoGrid'
 
 const ICONS = [
@@ -10,6 +10,12 @@ const ICONS = [
   'lucide:star',
   'lucide:heart',
   'lucide:code-2',
+  'lucide:coffee',
+  'lucide:globe',
+  'lucide:music',
+  'ph:brain',
+  'ph:lightning',
+  'tabler:crystal-ball',
 ]
 
 const GRADIENTS = [
@@ -20,73 +26,66 @@ const GRADIENTS = [
   { from: '#3b82f6', to: '#6366f1', dir: '135deg' },
 ]
 
+function pickRandom<T>(arr: T[], exclude: T): T {
+  let next: T
+  do { next = arr[Math.floor(Math.random() * arr.length)] } while (next === exclude)
+  return next
+}
+
 export function TryItCard() {
   const [icon, setIcon] = useState(ICONS[0])
   const [gradient, setGradient] = useState(GRADIENTS[0])
+  const [spin, setSpin] = useState(0)
+
+  const randomize = useCallback(() => {
+    setIcon((prev) => pickRandom(ICONS, prev))
+    setGradient((prev) => pickRandom(GRADIENTS, prev))
+    setSpin((r) => r + 360)
+  }, [])
 
   return (
     <Card className="col-span-1 p-6 flex flex-col gap-4" delay={0.1}>
       <div>
         <CardLabel>Interactive</CardLabel>
         <CardTitle>Try It Right Here</CardTitle>
-        <CardDesc>Pick an icon and a color — see your logo update live.</CardDesc>
+        <CardDesc>Hit randomize and see a new logo every time.</CardDesc>
       </div>
 
-      {/* Preview */}
+      {/* Preview + dice */}
       <div className="flex justify-center">
-        <div
-          className="flex size-24 items-center justify-center rounded-3xl shadow-lg shadow-black/20"
-          style={{
-            background: `linear-gradient(${gradient.dir}, ${gradient.from}, ${gradient.to})`,
-          }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={icon}
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.6 }}
-              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Icon icon={icon} width={44} className="text-white" />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Icon swatches */}
-      <div className="flex justify-center gap-2">
-        {ICONS.map((i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setIcon(i)}
-            data-umami-event="try it card interact"
-            className={`flex size-8 items-center justify-center rounded-lg transition-all ${
-              icon === i
-                ? 'bg-[var(--surface-secondary)] ring-2 ring-primary/50'
-                : 'bg-[var(--surface-secondary)] opacity-50 hover:opacity-100'
-            }`}
+        <div className="relative">
+          <motion.div
+            className="flex size-24 items-center justify-center rounded-3xl shadow-lg shadow-black/20"
+            animate={{ background: `linear-gradient(${gradient.dir}, ${gradient.from}, ${gradient.to})` }}
+            transition={{ duration: 0.3 }}
           >
-            <Icon icon={i} width={15} className="text-[var(--foreground)]" />
-          </button>
-        ))}
-      </div>
-
-      {/* Gradient swatches */}
-      <div className="flex justify-center gap-2">
-        {GRADIENTS.map((g) => (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={icon}
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.6 }}
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Icon icon={icon} width={44} className="text-white" />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
           <button
-            key={g.from}
             type="button"
-            onClick={() => setGradient(g)}
+            onClick={randomize}
             data-umami-event="try it card interact"
-            className={`size-6 rounded-full transition-all ${
-              gradient.from === g.from ? 'ring-2 ring-offset-2 ring-primary/60 ring-offset-[var(--surface)]' : 'opacity-70 hover:opacity-100'
-            }`}
-            style={{ background: `linear-gradient(${g.dir}, ${g.from}, ${g.to})` }}
-          />
-        ))}
+            className="absolute -bottom-2 -right-2 flex size-8 items-center justify-center rounded-xl border border-border bg-[var(--surface)] text-[var(--foreground)] shadow-md transition-opacity hover:opacity-80"
+          >
+            <motion.span
+              animate={{ rotate: spin }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="inline-flex"
+            >
+              <Icon icon="lucide:dice-5" width={14} />
+            </motion.span>
+          </button>
+        </div>
       </div>
 
       <a

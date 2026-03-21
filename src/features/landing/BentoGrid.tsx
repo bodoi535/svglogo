@@ -144,7 +144,7 @@ function FreeCard() {
 // Card: Export formats (2 cols wide)
 function ExportCard() {
   return (
-    <Card className="col-span-1 md:col-span-2 p-6" delay={0.1}>
+    <Card className="col-span-1 md:col-span-2 p-6 flex flex-col" delay={0.1}>
       <CardLabel>Export</CardLabel>
       <CardTitle>Any Format, Any Platform</CardTitle>
       <CardDesc>
@@ -165,7 +165,7 @@ function ExportCard() {
         ))}
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-auto pt-3 flex flex-wrap gap-2">
         {PLATFORM_PACKS.map((p) => (
           <span
             key={p.label}
