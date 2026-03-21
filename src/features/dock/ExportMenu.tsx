@@ -33,13 +33,13 @@ export function ExportMenu() {
         <Dropdown.Popover placement="top end">
           <Dropdown.Menu onAction={handleAction}>
             <Dropdown.Item id="svg">
-              <Label>SVG</Label>
+              <Label>Download SVG</Label>
             </Dropdown.Item>
             <Dropdown.Item id="png">
-              <Label>PNG</Label>
+              <Label>Download PNG</Label>
             </Dropdown.Item>
             <Dropdown.Item id="ico">
-              <Label>ICO (48px)</Label>
+              <Label>Download ICO (48px)</Label>
             </Dropdown.Item>
             <Separator />
             <Dropdown.Item id="copy-svg">

@@ -44,13 +44,13 @@ export function MobileTopBar() {
           <Dropdown.Popover placement="bottom start" className="w-52">
             <Dropdown.Menu onAction={handleAction}>
               <Dropdown.Item id="svg">
-                <Label>SVG</Label>
+                <Label>Download SVG</Label>
               </Dropdown.Item>
               <Dropdown.Item id="png">
-                <Label>PNG</Label>
+                <Label>Download PNG</Label>
               </Dropdown.Item>
               <Dropdown.Item id="ico">
-                <Label>ICO (48px)</Label>
+                <Label>Download ICO (48px)</Label>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown.Popover>
