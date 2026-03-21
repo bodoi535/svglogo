@@ -7,9 +7,9 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: "Mar 21, 2026",
     changes: [
-      "Added color palette",
+      "Added Color Palette",
       "Added Preview option",
-      "Added sign in option"
+      "Added Sign In option"
     ],
   },
   {
