@@ -1,4 +1,4 @@
-import { ICON_SETS } from "#/domain/icon/icon.types";
+import { FREE_ICON_SETS } from "#/domain/icon/icon.types";
 import { FREE_FONTS } from "#/domain/logo/logo.fonts";
 import { getRandomLogoVisual, getSmartLogoVisual } from "#/domain/logo/logo.randomizer";
 import { fetchCollection } from "#/infra/iconify/iconify-client";
@@ -10,7 +10,7 @@ function randomFont(): string {
 }
 
 function randomPrefix(): string {
-  return ICON_SETS[Math.floor(Math.random() * ICON_SETS.length)].id;
+  return FREE_ICON_SETS[Math.floor(Math.random() * FREE_ICON_SETS.length)].id;
 }
 
 const iconCollectionCache = new Map<string, string[]>();
@@ -62,11 +62,11 @@ function bumpStats(patch: Partial<RandomizeStats>) {
 
 export async function randomizeLogo(
   options:
-    | { smart: true; palette?: string[] }
-    | { smart?: false; icon: boolean; iconColor: boolean; background: boolean; font?: boolean; palette?: string[] },
+    | { smart: true; palette?: string[]; iconPrefix?: string }
+    | { smart?: false; icon: boolean; iconColor: boolean; background: boolean; font?: boolean; palette?: string[]; iconPrefix?: string },
 ) {
   const { present } = useLogoStore.getState();
-  const prefix = randomPrefix();
+  const prefix = options.iconPrefix || randomPrefix();
   const icons = await fetchAllIconsForPrefix(prefix);
 
   if (options.smart) {

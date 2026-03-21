@@ -8,14 +8,18 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
-import { ICON_SETS } from "#/domain/icon/icon.types";
+import { ICON_SETS, FREE_ICON_SETS } from "#/domain/icon/icon.types";
 import { selectIcon } from "#/commands/icon/select-icon";
 import { useIconSearch } from "#/queries/icon/use-icon-search";
 import { useGlobalIconSearch } from "#/queries/icon/use-global-icon-search";
 import { useLogoStore } from "#/store/logo-store";
+import { useAuth } from "#/queries/auth/use-auth";
+import { openUpgradeModal } from "#/commands/upgrade/open-upgrade-modal";
 import { IconGrid } from "./IconGrid";
 
 export function IconPickerModal() {
+  const user = useAuth();
+  const isCreator = user?.plan === "creator";
   const isOpen = useLogoStore((s) => s.iconPickerOpen);
   const closeIconPicker = useLogoStore((s) => s.closeIconPicker);
   const iconName = useLogoStore((s) => s.present.iconName);
@@ -35,8 +39,9 @@ export function IconPickerModal() {
   const { data: prefixIcons = [], isFetching: isFetchingPrefix } =
     useIconSearch(debouncedQuery, prefix);
 
+  const globalPrefixes = isCreator ? undefined : FREE_ICON_SETS.map((s) => s.id);
   const { data: globalIcons = [], isFetching: isFetchingGlobal } =
-    useGlobalIconSearch(debouncedQuery, isGlobalSearch);
+    useGlobalIconSearch(debouncedQuery, isGlobalSearch, globalPrefixes);
 
   const icons = isGlobalSearch ? globalIcons : prefixIcons;
   const isFetching = isGlobalSearch ? isFetchingGlobal : isFetchingPrefix;
@@ -83,9 +88,14 @@ export function IconPickerModal() {
 
                 <Select
                   selectedKey={prefix}
-                  onSelectionChange={(key) =>
-                    setSelectedIconPrefix(key as string)
-                  }
+                  onSelectionChange={(key) => {
+                    const set = ICON_SETS.find((s) => s.id === key);
+                    if (set?.premium && !isCreator) {
+                      openUpgradeModal();
+                      return;
+                    }
+                    setSelectedIconPrefix(key as string);
+                  }}
                   className="w-32 md:w-40 shrink-0"
                   aria-label="Icon set"
                   variant="secondary"
@@ -97,8 +107,13 @@ export function IconPickerModal() {
                   <Select.Popover placement="bottom end" shouldFlip>
                     <ListBox>
                       {ICON_SETS.map((s) => (
-                        <ListBox.Item key={s.id} id={s.id}>
+                        <ListBox.Item key={s.id} id={s.id} className={s.premium && !isCreator ? "opacity-50" : ""}>
                           <Label>{s.label}</Label>
+                          {s.premium && !isCreator && (
+                            <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full ml-auto">
+                              PRO
+                            </span>
+                          )}
                         </ListBox.Item>
                       ))}
                     </ListBox>

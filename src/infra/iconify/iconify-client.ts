@@ -57,10 +57,12 @@ export async function fetchCollection(prefix: string): Promise<string[]> {
   return all.map((n) => `${prefix}:${n}`);
 }
 
-export async function fetchGlobalSearch(query: string): Promise<string[]> {
-  const res = await fetch(
-    `${ICONIFY_BASE}/search?query=${encodeURIComponent(query)}&limit=128`,
-  );
+export async function fetchGlobalSearch(query: string, prefixes?: string[]): Promise<string[]> {
+  let url = `${ICONIFY_BASE}/search?query=${encodeURIComponent(query)}&limit=128`;
+  if (prefixes?.length) {
+    url += `&prefixes=${prefixes.join(",")}`;
+  }
+  const res = await fetch(url);
   const data = (await res.json()) as { icons?: string[] };
   return (data.icons ?? []) as string[];
 }

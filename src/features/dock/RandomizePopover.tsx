@@ -9,6 +9,8 @@ import { trackEvent } from "#/lib/analytics";
 import { useLogoStore } from "#/store/logo-store";
 import { useAuth } from "#/queries/auth/use-auth";
 import { AuthModal } from "#/features/auth/AuthModal";
+import { ICON_SETS, FREE_ICON_SETS } from "#/domain/icon/icon.types";
+import { openUpgradeModal } from "#/commands/upgrade/open-upgrade-modal";
 
 const FREE_PALETTE_COUNT = 9;
 
@@ -30,6 +32,9 @@ export function RandomizePopover() {
   const [randomizeBackground, setRandomizeBackground] = useState(true);
   const [randomizeFont, setRandomizeFont] = useState(true);
   const [randomizeFontColor, setRandomizeFontColor] = useState(true);
+  const [selectedIconSet, setSelectedIconSet] = useState<string | null>(null);
+  const isCreator = user?.plan === "creator";
+  const availableIconSets = isCreator ? ICON_SETS : FREE_ICON_SETS;
 
   const usePalette = !!selectedPalette;
   const nothingSelected = custom && !randomizeBackground && (textMode ? (!randomizeFont && !randomizeFontColor) : (!randomizeIcon && !randomizeIconColor));
@@ -42,8 +47,9 @@ export function RandomizePopover() {
     lastRun.current = now;
     setDiceRotation((r) => r + 360);
     const palette = selectedPalette ?? undefined;
+    const iconPrefix = selectedIconSet ?? undefined;
     if (!custom) {
-      void randomizeLogo({ smart: true, palette });
+      void randomizeLogo({ smart: true, palette, iconPrefix });
       trackEvent("randomize logo", { mode: "smart", text_mode: textMode, use_palette: usePalette });
     } else {
       if (nothingSelected) return;
@@ -53,6 +59,7 @@ export function RandomizePopover() {
         background: randomizeBackground,
         font: textMode && randomizeFont,
         palette,
+        iconPrefix,
       });
       trackEvent("randomize logo", {
         mode: "custom",
@@ -172,6 +179,63 @@ export function RandomizePopover() {
                             </div>
                           )}
                         </div>
+                      </div>
+                    </Popover.Dialog>
+                  </Popover.Content>
+                </Popover>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-sm">Icon Pack</Label>
+                  <p className="text-xs text-muted">Constrain icon set</p>
+                </div>
+                <Popover>
+                  <Popover.Trigger>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs text-muted hover:text-foreground transition-colors max-w-28 truncate"
+                    >
+                      {selectedIconSet ? availableIconSets.find((s) => s.id === selectedIconSet)?.label ?? "All" : "All"}
+                      <Icon icon="lucide:chevron-down" width={12} />
+                    </button>
+                  </Popover.Trigger>
+                  <Popover.Content placement="right">
+                    <Popover.Dialog>
+                      <div className="flex flex-col gap-1 w-44 max-h-52 overflow-y-auto">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedIconSet(null)}
+                          className={`flex items-center justify-between rounded-md px-2 py-1.5 text-xs transition-colors ${
+                            !selectedIconSet ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground"
+                          }`}
+                        >
+                          All
+                          {!selectedIconSet && <Check className="size-3" />}
+                        </button>
+                        {ICON_SETS.map((s) => (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => {
+                              if (s.premium && !isCreator) {
+                                openUpgradeModal();
+                                return;
+                              }
+                              setSelectedIconSet(s.id);
+                            }}
+                            className={`flex items-center justify-between rounded-md px-2 py-1.5 text-xs transition-colors ${
+                              selectedIconSet === s.id ? "bg-accent/10 text-accent" : s.premium && !isCreator ? "text-muted/50" : "text-muted hover:text-foreground"
+                            }`}
+                          >
+                            {s.label}
+                            {s.premium && !isCreator ? (
+                              <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">PRO</span>
+                            ) : selectedIconSet === s.id ? (
+                              <Check className="size-3" />
+                            ) : null}
+                          </button>
+                        ))}
                       </div>
                     </Popover.Dialog>
                   </Popover.Content>
