@@ -1,5 +1,6 @@
 import { getSupabaseServerClient, getSupabaseServiceClient } from "#/lib/supabase";
 import { createServerFn } from "@tanstack/react-start";
+import { env } from "cloudflare:workers";
 
 export const signUpEarlyAccessFn = createServerFn({ method: "POST" }).handler(
   async () => {
@@ -16,6 +17,17 @@ export const signUpEarlyAccessFn = createServerFn({ method: "POST" }).handler(
     if (error) {
       console.error("early_access upsert failed:", error);
       throw new Error(error.message);
+    }
+
+    if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+      await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: env.TELEGRAM_CHAT_ID,
+          text: `🎉 Early access signup (in-app): ${data.user.email}`,
+        }),
+      });
     }
   },
 );
