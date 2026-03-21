@@ -1,11 +1,16 @@
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { useState } from "react";
-import { signupFn } from "#/server/auth";
+import { useEffect, useRef, useState } from "react";
+import { signupFn, resendConfirmationFn } from "#/server/auth";
 
-export function SignUpTab() {
+export function SignUpTab({ onSuccess }: { onSuccess?: () => void }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval>>();
+
+  useEffect(() => () => clearInterval(timerRef.current), []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,6 +31,20 @@ export function SignUpTab() {
 
     setSuccess(email);
     setLoading(false);
+    onSuccess?.();
+  }
+
+  async function handleResend() {
+    setResending(true);
+    await resendConfirmationFn({ data: { email: success } });
+    setResending(false);
+    setCooldown(60);
+    timerRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) { clearInterval(timerRef.current); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
   }
 
   if (success) {
@@ -35,6 +54,16 @@ export function SignUpTab() {
         <p className="text-xs text-muted">
           We sent a confirmation link to <strong>{success}</strong>
         </p>
+        <Button
+          variant="ghost"
+          size="sm"
+          onPress={handleResend}
+          isPending={resending}
+          isDisabled={cooldown > 0}
+          className="mt-1"
+        >
+          {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend link"}
+        </Button>
       </div>
     );
   }

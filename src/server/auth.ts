@@ -42,6 +42,13 @@ export const signoutFn = createServerFn({ method: 'POST' }).handler(
   },
 )
 
+export const resendConfirmationFn = createServerFn({ method: 'POST' })
+  .inputValidator((d: { email: string }) => d)
+  .handler(async ({ data }) => {
+    const supabase = getSupabaseServerClient()
+    await supabase.auth.resend({ type: 'signup', email: data.email })
+  })
+
 export const oauthFn = createServerFn({ method: 'POST' })
   .inputValidator((d: { provider: 'google' | 'github'; redirectTo: string }) => d)
   .handler(async ({ data }) => {
