@@ -9,6 +9,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     changes: [
       "Added Color Palette",
       "Added Preview option",
+      "Added icon set option in randomize",
       "Added Sign In option"
     ],
   },
