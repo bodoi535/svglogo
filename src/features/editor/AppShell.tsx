@@ -7,6 +7,7 @@ import { AuthStoreProvider } from "#/providers/AuthStoreProvider";
 import { UserMenuButton } from "#/features/user-menu/UserMenuButton";
 import { CollectionsButton } from "#/features/collections/CollectionsButton";
 import { GlobalUpgradeModal } from "#/features/creator-plan/GlobalUpgradeModal";
+import { PreviewButton } from "#/features/preview/PreviewButton";
 import { ShareButton } from "#/features/share/ShareButton";
 import { EditorPage } from "./EditorPage";
 import { FABs } from "./FABs";
@@ -80,6 +81,9 @@ export function AppShell({
           >
             <motion.div variants={itemVariants}>
               <ShareButton />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <PreviewButton />
             </motion.div>
             <motion.div variants={itemVariants}>
               <CollectionsButton />
