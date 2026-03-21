@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
-import { PrivacyCard } from './PrivacyCard'
+import { TryItCard } from './TryItCard'
 
 // A broad sample of icons from different supported sets
 const PREVIEW_ICONS = [
@@ -263,7 +263,7 @@ export function BentoGrid() {
         <IconsCard />
         <FreeCard />
         {/* Row 2 */}
-        <PrivacyCard />
+        <TryItCard />
         <ExportCard />
         {/* Row 3 */}
         <GradientCard />
