@@ -103,7 +103,7 @@ export function CodeExportModal({ isOpen, onClose }: CodeExportModalProps) {
               <Button variant="outline" onPress={onClose}>
                 Close
               </Button>
-              <Button variant="primary" onPress={handleCopy} isDisabled={loading}>
+              <Button variant="primary" onPress={handleCopy} isDisabled={loading} data-umami-event="code export copy" data-umami-event-framework={framework}>
                 <Icon icon="lucide:copy" width={14} height={14} />
                 Copy code
               </Button>
