@@ -76,7 +76,10 @@ export function BrandKitModal({ isOpen, onClose }: BrandKitModalProps) {
           <Modal.Dialog className="max-w-3xl w-full">
             <Modal.Header>
               <div className="flex flex-col">
-                <Modal.Heading>Customize your brand assets</Modal.Heading>
+                <div className="flex items-center gap-2">
+                  <Modal.Heading>Customize your brand assets</Modal.Heading>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-warning bg-warning/10 border border-warning/20 rounded-full px-2 py-0.5">Experimental</span>
+                </div>
                 <span className="text-xs text-muted">Turn your logo into a complete brand kit</span>
               </div>
               <Modal.CloseTrigger />
