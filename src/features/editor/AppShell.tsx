@@ -5,9 +5,7 @@ import type { AuthUser } from "#/store/auth-store";
 import { loadLogoFromState } from "#/commands/logo/load-logo";
 import { AuthStoreProvider } from "#/providers/AuthStoreProvider";
 import { useInfiniteStore } from "#/store/infinite-store";
-import { UserMenuButton } from "#/features/user-menu/UserMenuButton";
 import { CollectionsButton } from "#/features/collections/CollectionsButton";
-import { GlobalUpgradeModal } from "#/features/creator-plan/GlobalUpgradeModal";
 import { PreviewButton } from "#/features/preview/PreviewButton";
 import { ShareButton } from "#/features/share/ShareButton";
 import { EditorPage } from "./EditorPage";
@@ -82,9 +80,6 @@ export function AppShell({
 
               <div className="hidden md:block">
                 <FABs />
-                <div className="absolute top-4 right-4 z-50">
-                  <UserMenuButton />
-                </div>
                 <motion.div
                   variants={containerVariants}
                   initial="hidden"
@@ -107,7 +102,6 @@ export function AppShell({
         </AnimatePresence>
         <OnboardingTour />
         <WelcomeOnboarding />
-        <GlobalUpgradeModal />
         <EditorPage />
       </div>
     </AuthStoreProvider>

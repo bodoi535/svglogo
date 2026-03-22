@@ -2,7 +2,7 @@ import { LegalPage, Section } from './LegalPage'
 
 export function TermsPage() {
   return (
-    <LegalPage title="Terms of Use" lastUpdated="March 20, 2026">
+    <LegalPage title="Terms of Use" lastUpdated="March 22, 2026">
       <Section title="Acceptance">
         <p>
           By using SVGLogo.dev you agree to these terms. If you do not agree, please do not use the
@@ -12,9 +12,8 @@ export function TermsPage() {
 
       <Section title="The Service">
         <p>
-          SVGLogo.dev provides a free, browser-based tool for creating and exporting SVG logos.
-          The core editor is free to use with no account required. A paid Creator Plan is planned
-          for additional features targeted at studios and professional makers.
+          SVGLogo.dev is a free, open-source, browser-based tool for creating and exporting SVG logos.
+          All features are free to use with no account required.
         </p>
         <p>
           We reserve the right to modify, suspend, or discontinue any part of the service at any
@@ -28,7 +27,7 @@ export function TermsPage() {
           <li>Use the service for any unlawful purpose</li>
           <li>Attempt to scrape, abuse, or overload our infrastructure</li>
           <li>Use the Share feature to distribute harmful or illegal content</li>
-          <li>Misrepresent your identity or affiliation when signing up for early access</li>
+          <li>Misrepresent your identity or affiliation</li>
         </ul>
       </Section>
 
@@ -44,8 +43,7 @@ export function TermsPage() {
           icon set you use for commercial projects.
         </p>
         <p>
-          The SVGLogo.dev application code, design, and branding are the property of the creator
-          and may not be copied or redistributed without permission.
+          SVGLogo.dev is open source. See the project license on GitHub for redistribution terms.
         </p>
       </Section>
 

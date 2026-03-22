@@ -1,14 +1,13 @@
 import { Avatar, Dropdown, Label } from "@heroui/react";
 import {
   ArrowRightFromSquare,
-  CrownDiamond,
+  Code,
   Person,
 } from "@gravity-ui/icons";
 import { useState } from "react";
 import type { AuthUser } from "#/store/auth-store";
 import { signoutFn } from "#/server/auth";
 import { setUser } from "#/commands/auth/set-user";
-import { openUpgradeModal } from "#/commands/upgrade/open-upgrade-modal";
 import { MyAccountModal } from "./MyAccountModal";
 
 function getInitials(name: string | null, email: string) {
@@ -20,7 +19,6 @@ function getInitials(name: string | null, email: string) {
 }
 
 export function UserMenu({ user }: { user: AuthUser }) {
-  const isCreator = user.plan === "creator";
   const [accountOpen, setAccountOpen] = useState(false);
 
   async function handleSignOut() {
@@ -30,8 +28,8 @@ export function UserMenu({ user }: { user: AuthUser }) {
 
   function handleAction(key: React.Key) {
     if (key === "signout") handleSignOut();
-    if (key === "upgrade") openUpgradeModal();
     if (key === "account") setAccountOpen(true);
+    if (key === "source") window.open("https://github.com/mxvsh/svglogo", "_blank");
   }
 
   return (
@@ -64,14 +62,12 @@ export function UserMenu({ user }: { user: AuthUser }) {
                   <Person className="size-3.5 text-muted" />
                 </div>
               </Dropdown.Item>
-              {!isCreator && (
-                <Dropdown.Item id="upgrade" textValue="View Creator Plan">
-                  <div className="flex w-full items-center justify-between gap-2">
-                    <Label>View Creator Plan</Label>
-                    <CrownDiamond className="size-3.5 text-muted" />
-                  </div>
-                </Dropdown.Item>
-              )}
+              <Dropdown.Item id="source" textValue="View Source Code">
+                <div className="flex w-full items-center justify-between gap-2">
+                  <Label>View Source Code</Label>
+                  <Code className="size-3.5 text-muted" />
+                </div>
+              </Dropdown.Item>
             </Dropdown.Section>
             <Dropdown.Section>
               <Dropdown.Item id="signout" textValue="Sign out" variant="danger">

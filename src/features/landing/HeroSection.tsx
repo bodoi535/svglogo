@@ -61,9 +61,10 @@ export function HeroSection() {
               <Icon icon="lucide:arrow-right" width={16} />
             </Button>
           </a>
-          <a href="/creator">
-            <Button size="lg" variant="ghost" className="text-muted">
-              View Creator Plan
+          <a href="https://github.com/mxvsh/svglogo" target="_blank" rel="noreferrer">
+            <Button size="lg" variant="ghost" className="text-muted gap-2">
+              <Icon icon="simple-icons:github" width={16} />
+              View Source Code
             </Button>
           </a>
         </motion.div>

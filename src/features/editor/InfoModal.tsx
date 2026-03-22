@@ -1,6 +1,5 @@
-import { Button, Label, Modal, Separator, Tabs } from "@heroui/react";
+import { Button, Modal, Separator, Tabs } from "@heroui/react";
 import { CHANGELOG } from "#/data/changelog";
-import { PRICE_ONE_TIME, PRICE_ONE_TIME_EARLY } from "#/data/creator-plan";
 
 const shortcuts = [
   { action: "Undo", shortcut: "⌘ + Z" },
@@ -54,17 +53,15 @@ export function InfoModal({ isOpen, onClose, defaultTab, highlightLatest }: Info
                 <Tabs.Panel id="about" className="h-64 overflow-y-auto px-4 py-4">
                   <div className="flex flex-col gap-3 text-sm text-muted h-full">
                     <p>
-                      Free browser-based logo maker — pick an icon, customize colors and backgrounds, export as SVG, PNG, or ICO. No account needed to get started.
+                      Free and open-source browser-based logo maker — pick an icon, customize colors and backgrounds, export as SVG, PNG, or ICO. No account needed.
                       <Separator className="mt-4"/>
                     </p>
                     <p>
-                      Need brand kits, social assets, and logo variants?{" "}
-                      <a href="/creator" className="text-primary hover:underline font-medium">Creator Plan</a>
-                      {" "}is a one-time purchase at ${PRICE_ONE_TIME_EARLY}.
+                      All features are 100% free — brand kits, social assets, code export, premium icon sets, and more. No paywalls, no limits.
                     </p>
                     <span className="flex-1"/>
                     <p>
-                      Free to use for any purpose, forever.
+                      <a href="https://github.com/mxvsh/svglogo" target="_blank" rel="noreferrer" className="text-primary hover:underline font-medium">View source on GitHub</a>
                     </p>
                   </div>
                 </Tabs.Panel>

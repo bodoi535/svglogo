@@ -2,11 +2,11 @@ import { LegalPage, Section } from './LegalPage'
 
 export function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy" lastUpdated="March 20, 2026">
+    <LegalPage title="Privacy Policy" lastUpdated="March 22, 2026">
       <Section title="Overview">
         <p>
-          SVGLogo.dev is a browser-based logo design tool. We are committed to protecting your
-          privacy. This policy explains what data we collect, why, and how it is used.
+          SVGLogo.dev is a free, open-source, browser-based logo design tool. We are committed to
+          protecting your privacy. This policy explains what data we collect, why, and how it is used.
         </p>
       </Section>
 
@@ -18,10 +18,9 @@ export function PrivacyPolicyPage() {
           No data is shared with third parties.
         </p>
         <p>
-          <strong className="text-(--foreground)">Early access sign-ups.</strong> If you
-          voluntarily submit your email address via the Creator Plan early access form, we store
-          that email address to notify you before launch. We do not sell, share, or use your email
-          for any other purpose. You can request deletion at any time by emailing us.
+          <strong className="text-(--foreground)">Accounts.</strong> If you optionally sign in
+          (via Google or GitHub), we store your email address and display name to sync your
+          collections. We do not sell or share your data with third parties.
         </p>
         <p>
           <strong className="text-(--foreground)">Shared logos.</strong> When you click
@@ -50,25 +49,19 @@ export function PrivacyPolicyPage() {
           Cloudflare Workers. Cloudflare may process request metadata (IP addresses, headers) as
           part of DDoS protection and routing. Refer to Cloudflare's privacy policy for details.
         </p>
-        <p>
-          <strong className="text-[var(--foreground)]">Cloudflare Turnstile.</strong> The early
-          access form uses Cloudflare Turnstile for bot protection. This is an invisible challenge
-          that does not use cookies or track users.
-        </p>
       </Section>
 
       <Section title="Data Retention">
         <p>
-          Anonymous analytics data is retained for up to 12 months. Early access emails are
-          retained until the Creator Plan launches or until you request removal. Shared logo data
-          expires automatically after 30 days.
+          Anonymous analytics data is retained for up to 12 months. Account data is retained
+          until you request deletion. Shared logo data expires automatically after 30 days.
         </p>
       </Section>
 
       <Section title="Your Rights">
         <p>
           You may request access to, correction of, or deletion of any personal data we hold about
-          you (i.e. your email if you signed up for early access). Contact us at the address below.
+          you. Contact us at the address below.
         </p>
       </Section>
 

@@ -1,27 +1,20 @@
 import { Button, Label, Popover, Switch, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Check, Lock } from "@gravity-ui/icons";
+import { Check } from "@gravity-ui/icons";
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 import palettes from "nice-color-palettes/200.json";
 import { randomizeLogo } from "#/commands/logo/randomize-logo";
 import { trackEvent } from "#/lib/analytics";
 import { useLogoStore } from "#/store/logo-store";
-import { useAuth } from "#/queries/auth/use-auth";
-import { AuthModal } from "#/features/auth/AuthModal";
-import { ICON_SETS, FREE_ICON_SETS } from "#/domain/icon/icon.types";
-import { openUpgradeModal } from "#/commands/upgrade/open-upgrade-modal";
-
-const FREE_PALETTE_COUNT = 9;
+import { ICON_SETS } from "#/domain/icon/icon.types";
 
 function arraysEqual(a: string[], b: string[]) {
   return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
 export function RandomizePopover() {
-  const user = useAuth();
   const textMode = useLogoStore((s) => s.present.textMode);
-  const [authOpen, setAuthOpen] = useState(false);
   const [diceRotation, setDiceRotation] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -34,8 +27,6 @@ export function RandomizePopover() {
   const [randomizeFontColor, setRandomizeFontColor] = useState(true);
   const [selectedIconSet, setSelectedIconSet] = useState<string | null>(null);
   const [iconPackOpen, setIconPackOpen] = useState(false);
-  const isCreator = user?.plan === "creator";
-  const availableIconSets = isCreator ? ICON_SETS : FREE_ICON_SETS;
 
   const usePalette = !!selectedPalette;
   const nothingSelected = custom && !randomizeBackground && (textMode ? (!randomizeFont && !randomizeFontColor) : (!randomizeIcon && !randomizeIconColor));
@@ -147,7 +138,7 @@ export function RandomizePopover() {
                           {!selectedPalette && <Check className="size-3" />}
                         </button>
                         <div className="grid grid-cols-3 gap-1.5 max-h-52 overflow-y-auto">
-                          {(palettes as string[][]).slice(0, user ? undefined : FREE_PALETTE_COUNT).map((palette, i) => {
+                          {(palettes as string[][]).map((palette, i) => {
                             const isActive = selectedPalette ? arraysEqual(selectedPalette, palette) : false;
                             return (
                               <button
@@ -170,15 +161,6 @@ export function RandomizePopover() {
                               </button>
                             );
                           })}
-                          {!user && (
-                            <div className="col-span-3 flex flex-col items-center gap-2 rounded-lg border border-border p-3">
-                              <Lock className="size-4 text-muted" />
-                              <p className="text-[11px] text-muted text-center">Sign in to unlock {(palettes as string[][]).length - FREE_PALETTE_COUNT} more palettes</p>
-                              <Button variant="secondary" size="sm" className="w-full text-xs" onPress={() => { setPaletteOpen(false); setIsOpen(false); setAuthOpen(true); }} data-umami-event="palette sign up cta">
-                                Sign in
-                              </Button>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </Popover.Dialog>
@@ -197,7 +179,7 @@ export function RandomizePopover() {
                       type="button"
                       className="flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs text-muted hover:text-foreground transition-colors max-w-28 truncate"
                     >
-                      {selectedIconSet ? availableIconSets.find((s) => s.id === selectedIconSet)?.label ?? "All" : "All"}
+                      {selectedIconSet ? ICON_SETS.find((s) => s.id === selectedIconSet)?.label ?? "All" : "All"}
                       <Icon icon="lucide:chevron-down" width={12} />
                     </button>
                   </Popover.Trigger>
@@ -219,23 +201,15 @@ export function RandomizePopover() {
                             key={s.id}
                             type="button"
                             onClick={() => {
-                              if (s.premium && !isCreator) {
-                                openUpgradeModal();
-                                return;
-                              }
                               setSelectedIconSet(s.id);
                               setIconPackOpen(false);
                             }}
                             className={`flex items-center justify-between rounded-md px-2 py-1.5 text-xs transition-colors ${
-                              selectedIconSet === s.id ? "bg-accent/10 text-accent" : s.premium && !isCreator ? "text-muted/50" : "text-muted hover:text-foreground"
+                              selectedIconSet === s.id ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground"
                             }`}
                           >
                             {s.label}
-                            {s.premium && !isCreator ? (
-                              <span className="text-[9px] font-semibold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">PRO</span>
-                            ) : selectedIconSet === s.id ? (
-                              <Check className="size-3" />
-                            ) : null}
+                            {selectedIconSet === s.id && <Check className="size-3" />}
                           </button>
                         ))}
                       </div>
@@ -318,7 +292,6 @@ export function RandomizePopover() {
         </Popover.Content>
       </Popover>
     </motion.div>
-    <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
     </>
   );
 }

@@ -7,9 +7,9 @@ import { useChangelogStatus } from "#/queries/changelog/use-changelog-status";
 import { getRandomizeStats } from "#/commands/logo/randomize-logo";
 import { InfoModal } from "./InfoModal";
 import { StatsModal } from "./StatsModal";
-import { CreatorPlanButton } from "../creator-plan/CreatorPlanButton";
 
 const X_URL = "https://x.com/monawwarx";
+const GITHUB_URL = "https://github.com/mxvsh/svglogo";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -66,6 +66,21 @@ export function FABs() {
           </Tooltip.Trigger>
           <Tooltip.Content placement="left">
             <p>Follow on X</p>
+          </Tooltip.Content>
+        </Tooltip>
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <Tooltip delay={0}>
+          <Tooltip.Trigger>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer" data-umami-event="click github link">
+              <Button variant="ghost" isIconOnly aria-label="GitHub">
+                <Icon icon="simple-icons:github" width={14} height={14} />
+              </Button>
+            </a>
+          </Tooltip.Trigger>
+          <Tooltip.Content placement="left">
+            <p>GitHub</p>
           </Tooltip.Content>
         </Tooltip>
       </motion.div>

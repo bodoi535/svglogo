@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { buildBackgroundCss } from "#/domain/logo/logo.svg-builder";
 import { generateVariation } from "#/domain/logo/logo.variations";
 import { useLogoState } from "#/queries/logo/use-logo-state";
-import { useAuth } from "#/queries/auth/use-auth";
 import { useInfiniteStore } from "#/store/infinite-store";
 import { updateLogo } from "#/commands/logo/update-logo";
-import { LAUNCH_DATE } from "#/data/creator-plan";
 import type { LogoState } from "#/domain/logo/logo.types";
 
 const TILE_SIZE = 140;
@@ -47,8 +45,6 @@ function useTileCache(base: LogoState) {
 
 export function InfiniteCanvas() {
   const present = useLogoState();
-  const user = useAuth();
-  const isCreator = user?.plan === "creator";
   const { panX, panY, zoom, setPan, setZoom } = useInfiniteStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({ dragging: false, startX: 0, startY: 0, startPanX: 0, startPanY: 0, moved: false });
@@ -150,11 +146,6 @@ export function InfiniteCanvas() {
     >
       {/* Top bar */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 pointer-events-none">
-        {!isCreator && (
-          <div className="rounded-lg bg-primary/10 border border-primary/20 px-3 py-1.5 text-[11px] font-medium text-primary backdrop-blur-sm">
-            Try Infinite Mode free until {LAUNCH_DATE}
-          </div>
-        )}
         <div className="flex items-center gap-3 rounded-xl bg-surface/80 backdrop-blur-sm border border-border px-3 py-1.5 text-[10px] font-mono text-muted">
           <span>{Math.round(-panX)}, {Math.round(-panY)}</span>
           <span className="text-muted/50">·</span>
