@@ -1,5 +1,7 @@
+import { Button } from '@heroui/react'
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { TryItCard } from './TryItCard'
 
 // A broad sample of icons from different supported sets
@@ -38,6 +40,33 @@ const PLATFORM_PACKS = [
   { label: 'Android', icon: 'simple-icons:android' },
   { label: 'macOS', icon: 'simple-icons:macos' },
   { label: 'Web / PWA', icon: 'lucide:chrome' },
+]
+
+const SOCIAL_ASSETS = [
+  { icon: 'simple-icons:x', label: 'Twitter / X Banner' },
+  { icon: 'lucide:globe', label: 'Open Graph · 1200×630' },
+  { icon: 'simple-icons:linkedin', label: 'LinkedIn Cover' },
+  { icon: 'lucide:smartphone', label: 'App Store Preview' },
+]
+
+const RANDOM_ICONS = [
+  'lucide:zap', 'lucide:flame', 'lucide:rocket', 'lucide:star',
+  'lucide:heart', 'lucide:crown', 'lucide:mountain', 'lucide:leaf',
+  'lucide:globe', 'lucide:coffee', 'lucide:gem', 'lucide:bolt',
+]
+
+const RANDOM_COLORS = [
+  '#6366f1', '#ec4899', '#f59e0b', '#10b981',
+  '#3b82f6', '#ef4444', '#8b5cf6', '#06b6d4',
+]
+
+const COMING_FEATURES = [
+  { icon: 'lucide:layout-template', label: 'Logo Presets', desc: 'Start from curated styles' },
+  { icon: 'lucide:shapes', label: 'Abstract Logos', desc: 'Hundreds of unique shapes' },
+  { icon: 'lucide:cloud', label: 'Sync Collections', desc: 'Access your logos anywhere' },
+  { icon: 'lucide:sparkles', label: 'Variations', desc: 'Generate logo ideas instantly' },
+  { icon: 'lucide:type', label: 'Premium Fonts', desc: 'Exclusive typeface library' },
+  { icon: 'lucide:swatch-book', label: 'Brand Palettes', desc: 'Curated color systems' },
 ]
 
 const GRADIENTS = [
@@ -240,6 +269,110 @@ function CollectionsCard() {
   )
 }
 
+// Card: Social Media Assets
+function SocialCard() {
+  return (
+    <Card className="col-span-1 p-6" delay={0.25}>
+      <CardLabel>Social Media Assets</CardLabel>
+      <CardTitle>Ready for every platform</CardTitle>
+      <CardDesc>
+        Perfectly sized exports for every surface — no more manual resizing.
+      </CardDesc>
+      <div className="mt-5 flex flex-col gap-2">
+        {SOCIAL_ASSETS.map((a) => (
+          <div
+            key={a.label}
+            className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface-secondary)] px-3 py-2.5"
+          >
+            <Icon icon={a.icon} width={14} className="text-muted shrink-0" />
+            <span className="text-xs text-muted">{a.label}</span>
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
+}
+
+// Card: Logo Variants
+function VariantsCard() {
+  const [icon, setIcon] = useState('lucide:zap')
+  const [color, setColor] = useState('#6366f1')
+
+  const randomize = () => {
+    setIcon(RANDOM_ICONS[Math.floor(Math.random() * RANDOM_ICONS.length)])
+    setColor(RANDOM_COLORS[Math.floor(Math.random() * RANDOM_COLORS.length)])
+  }
+
+  const variants = [
+    { label: 'Light', bg: '#ffffff', fg: '#111111' },
+    { label: 'Dark', bg: '#111111', fg: '#ffffff' },
+    { label: 'Transparent', bg: 'transparent', fg: color, border: true },
+    { label: 'Icon only', bg: color, fg: '#ffffff' },
+  ]
+
+  return (
+    <Card className="col-span-1 md:col-span-2 p-6 flex flex-col" delay={0.28}>
+      <CardLabel>Logo Variants</CardLabel>
+      <CardTitle>One design, every version</CardTitle>
+      <CardDesc>
+        Light, dark, transparent, icon-only — your full brand kit generated from a single logo.
+      </CardDesc>
+      <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {variants.map((v) => (
+          <div key={v.label} className="flex flex-col gap-2">
+            <div
+              className="h-16 rounded-xl flex items-center justify-center transition-colors duration-300"
+              style={{
+                background: v.bg === 'transparent'
+                  ? 'repeating-conic-gradient(var(--surface-secondary) 0% 25%, var(--surface) 0% 50%) 0 0 / 12px 12px'
+                  : v.bg,
+                border: v.border ? '1px solid var(--border)' : undefined,
+              }}
+            >
+              <Icon icon={icon} width={24} style={{ color: v.fg }} />
+            </div>
+            <p className="text-xs text-center text-muted">{v.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-auto pt-4 flex items-center justify-between">
+        <p className="text-xs text-muted/50">Click to see your logo in every variant</p>
+        <Button variant="ghost" onPress={randomize} className="gap-1.5 text-xs text-muted">
+          <Icon icon="lucide:shuffle" width={13} />
+          Randomize
+        </Button>
+      </div>
+    </Card>
+  )
+}
+
+// Card: Built for Creators — coming features
+function BuiltForCreatorsCard() {
+  return (
+    <Card className="col-span-1 md:col-span-3 p-6" delay={0.32}>
+      <CardLabel>What's coming</CardLabel>
+      <CardTitle>Built for creators</CardTitle>
+      <CardDesc>
+        Everything we're building next — all free, all open source.
+      </CardDesc>
+      <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {COMING_FEATURES.map((f) => (
+          <div
+            key={f.label}
+            className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface-secondary)] px-3 py-2.5"
+          >
+            <Icon icon={f.icon} width={15} className="text-muted shrink-0" />
+            <div>
+              <p className="text-xs font-medium leading-tight">{f.label}</p>
+              <p className="text-[10px] text-muted leading-tight mt-0.5">{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
+}
+
 export function BentoGrid() {
   return (
     <section id="features" className="px-4 pb-24 max-w-5xl mx-auto scroll-mt-16">
@@ -269,6 +402,11 @@ export function BentoGrid() {
         <GradientCard />
         <ShareCard />
         <CollectionsCard />
+        {/* Row 4 — Built for creators */}
+        <SocialCard />
+        <VariantsCard />
+        {/* Row 5 — Coming features */}
+        <BuiltForCreatorsCard />
       </div>
     </section>
   )
