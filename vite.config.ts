@@ -8,6 +8,9 @@ import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 const config = defineConfig({
+  define: {
+    __BUILD_HASH__: JSON.stringify(process.env.CF_PAGES_COMMIT_SHA ?? Date.now().toString(36)),
+  },
   server: {
     allowedHosts: true,
   },
